@@ -1,8 +1,9 @@
-
+import {BrowserRouter} from 'react-router-dom'
+import { Router } from './routes'
 export function App() {
   return (
-    <>
-      <h1 className="sm:bg-slate-700 font-nunito">Hello word</h1>
-    </>
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
   )
 }

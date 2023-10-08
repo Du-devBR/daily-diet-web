@@ -1,7 +1,9 @@
+import { Hearder } from "../../components/hearder";
+
 export function Home() {
   return (
     <div>
-      <h1>Home</h1>
+      <Hearder />
     </div>
   );
 }

@@ -66,11 +66,18 @@ export default {
         '.calc-main-height': {
           'min-height': 'calc(100vh - 132px)',
         },
+        '.calc-manege-height': {
+          'min-height': 'calc(100vh - 72px)',
+        }
       }, ['responsive', 'hover'])
     },
     function ({addComponents }){
       addComponents({
         '.active-solid-button': {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0.75rem',
           padding: '1rem 1.5rem',
           borderRadius: '0.375rem',
           backgroundColor: '#333638',
@@ -85,6 +92,10 @@ export default {
           }
         },
         '.active-outline-button': {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0.75rem',
           padding: '1rem 1.5rem',
           borderRadius: '0.375rem',
           backgroundColor: 'none',
@@ -98,7 +109,48 @@ export default {
             backgroundColor: '#DDDEDF',
             transition: '0.5s',
           }
-        }
+        },
+        '.button-select-green': {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0.75rem',
+          padding: '1rem',
+          borderRadius: '0.375rem',
+          backgroundColor: '#EFF0F0',
+          border: 'solid 1px #EFF0F0',
+          color: '#1B1D1E',
+          fontSize: '0.875rem',
+          fontWeight: 700,
+          lineHeight: '130%',
+          transition: '0.5s',
+          '&.active': {
+            backgroundColor: '#E5F0DB',
+            border: 'solid 1px #639339',
+            transition: '0.5s',
+          }
+        },
+        '.button-select-red': {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '0.75rem',
+          padding: '1rem',
+          borderRadius: '0.375rem',
+          backgroundColor: '#EFF0F0',
+          border: 'solid 1px #EFF0F0',
+          color: '#1B1D1E',
+          fontSize: '0.875rem',
+          fontWeight: 700,
+          lineHeight: '130%',
+          transition: '0.5s',
+          '&.active': {
+            backgroundColor: '#F4E6E7',
+            border: 'solid 1px #BF3B44',
+            transition: '0.5s',
+          }
+        },
+
       })
     }
   ],

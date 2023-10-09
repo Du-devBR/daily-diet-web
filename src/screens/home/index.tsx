@@ -1,6 +1,7 @@
-import { ArrowUpRight } from "phosphor-react";
+import { ArrowUpRight, Plus } from "phosphor-react";
 import { Hearder } from "../../components/hearder";
 import { Link } from "react-router-dom";
+import { Meal } from "../../components/meal";
 
 export function Home() {
   return (
@@ -15,10 +16,19 @@ export function Home() {
           <ArrowUpRight className=' text-BrandGreenDark w-6 h-6' />
         </Link>
       </nav>
-      <div>
-        <h2>Refeições</h2>
-        <button className=" active-outline-button">+ Nova refeição</button>
-      </div>
+      <main className=" mt-10 w-full">
+        <div className="w-full">
+          <h2 className=" text-bodyM text-BaseGray100 font-nunito">Refeições</h2>
+          <Link to={"/create"}
+            className=" active-solid-button w-full mt-2">
+              <Plus className=" w-4 h-4"/> Nova refeição
+          </Link>
+        </div>
+        <section className=" mt-8">
+          <h3 className=" text-titleS text-BaseGray100 font-nunito mb-2">12.08.12</h3>
+          <Meal />
+        </section>
+      </main>
     </div>
   );
 }

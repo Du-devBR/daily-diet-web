@@ -1,3 +1,4 @@
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html",
@@ -14,8 +15,8 @@ export default {
         BaseGray300: "#5C6265",
         BaseGray400: "#B9BBBC",
         BaseGray500: "#DDDEDF",
-        BaseGray600: "#DDDEDF",
-        BaseGray700: "#DDDEDF",
+        BaseGray600: "#EFF0F0",
+        BaseGray700: "#FAFAFA",
         BrandGreenDark: "#639339",
         BrandGreenLight: "#E5F0DB",
         BrandGreenMid: "#CBE4B4",
@@ -55,8 +56,50 @@ export default {
           lineHeight: '130%',
           fontWeight: '700'
         }],
-      }
+      },
+
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.calc-main-height': {
+          'min-height': 'calc(100vh - 132px)',
+        },
+      }, ['responsive', 'hover'])
+    },
+    function ({addComponents }){
+      addComponents({
+        '.active-solid-button': {
+          padding: '1rem 1.5rem',
+          borderRadius: '0.375rem',
+          backgroundColor: '#333638',
+          color: '#FFF',
+          fontSize: '0.875rem',
+          fontWeight: 700,
+          lineHeight: '130%',
+          transition: '0.5s',
+          '&:hover': {
+            backgroundColor: '#1B1D1E',
+            transition: '0.5s',
+          }
+        },
+        '.active-outline-button': {
+          padding: '1rem 1.5rem',
+          borderRadius: '0.375rem',
+          backgroundColor: 'none',
+          border: 'solid 1px #1B1D1E',
+          color: '#1B1D1E',
+          fontSize: '0.875rem',
+          fontWeight: 700,
+          lineHeight: '130%',
+          transition: '0.5s',
+          '&:hover': {
+            backgroundColor: '#DDDEDF',
+            transition: '0.5s',
+          }
+        }
+      })
+    }
+  ],
 }

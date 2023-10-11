@@ -16,7 +16,7 @@ export function Router(){
       <Route path="/statistics" element={<Statistics />}/>
       <Route path="/create" element={<CreateMeal />}/>
       <Route path="/edit" element={<EditMeal />}/>
-      <Route path="/feedback" element={<Feedback />}/>
+      <Route path="/feedback/:status" element={<Feedback />}/>
       <Route path="/meal" element={<MealDetail />} />
     </Routes>
   )

@@ -1,5 +1,5 @@
 import {ArrowLeft} from 'phosphor-react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { formattedDate } from '../../util/formatDate';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -14,6 +14,7 @@ interface IMeal {
 
 export function CreateMeal() {
   const [isDiet, setIsDiet] = useState<boolean | null>(null)
+  const navigate = useNavigate()
   const {register, handleSubmit, reset, setError, clearErrors, formState: {errors}} = useForm<IMeal>()
 
   function checkStateIsDiet(){
@@ -37,6 +38,9 @@ export function CreateMeal() {
         console.log(form);
         reset()
         setIsDiet(null)
+
+        navigate(`/feedback/${isDiet}`)
+
       }
       if(isDiet === null){
         setError('isDiet', {

@@ -58,7 +58,7 @@ export function CreateMeal() {
         <div className='flex flex-col gap-1 w-full'>
           <label className=' text-titleXS text-BaseGray200 font-nunito' htmlFor="">Nome</label>
           <input
-            className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito ${errors.name ? ' bg-BrandRedLight border-BrandRedDark' : ''}`}
+            className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${errors.name ? ' bg-BrandRedLight border-BrandRedDark' : ''}`}
             type="text"
             placeholder={errors.name ? errors.name.message : "Refeição"}
             {...register("name",
@@ -73,7 +73,7 @@ export function CreateMeal() {
         <div className='flex flex-col gap-1 w-full'>
           <label className=' text-titleXS text-BaseGray200 font-nunito' htmlFor="">Descrição</label>
           <textarea
-            className= {`w-full p-3.5 h-28 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito ${errors.description ? ' bg-BrandRedLight border-BrandRedDark' : ''}`}
+            className= {`w-full p-3.5 h-28 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${errors.description ? ' bg-BrandRedLight border-BrandRedDark' : ''}`}
             placeholder={errors.description ? errors.description.message : "Descreva sua refeição"}
             {...register("description",
               {
@@ -87,7 +87,7 @@ export function CreateMeal() {
           <div className='flex flex-col gap-1 w-full'>
             <label className=' text-titleXS text-BaseGray200 font-nunito' htmlFor="">Data</label>
             <input
-              className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito ${errors.data ? ' bg-BrandRedLight border-BrandRedDark' : ''}`}
+              className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${errors.data ? ' bg-BrandRedLight border-BrandRedDark' : ''}`}
               type="date"
               placeholder={errors.data && errors.data.message}
               {...register("data",
@@ -98,7 +98,7 @@ export function CreateMeal() {
           <div className='flex flex-col gap-1 w-full'>
             <label className=' text-titleXS text-BaseGray200 font-nunito' htmlFor="">Hora</label>
             <input
-              className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito ${errors.hour ? ' bg-BrandRedLight border-BrandRedDark' : ''}`}
+              className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${errors.hour ? ' bg-BrandRedLight border-BrandRedDark' : ''}`}
               type="time"
               placeholder={errors.hour && errors.hour.message}
               {...register("hour",

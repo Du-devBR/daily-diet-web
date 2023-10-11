@@ -5,6 +5,7 @@ import { Statistics } from "../screens/statistics";
 import { CreateMeal } from "../screens/createMeal";
 import { EditMeal } from "../screens/editMeal";
 import { Feedback } from "../screens/feedback";
+import { MealDetail } from "../screens/mealDetail";
 
 
 export function Router(){
@@ -16,6 +17,7 @@ export function Router(){
       <Route path="/create" element={<CreateMeal />}/>
       <Route path="/edit" element={<EditMeal />}/>
       <Route path="/feedback" element={<Feedback />}/>
+      <Route path="/meal" element={<MealDetail />} />
     </Routes>
   )
 }

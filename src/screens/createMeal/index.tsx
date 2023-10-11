@@ -107,9 +107,9 @@ export function CreateMeal() {
             />
           </div>
         </div>
-        <div className='flex flex-col gap-6'>
-          <label htmlFor="">Esta dentro da dieta?</label>
-          <div className='flex gap-6 w-full'>
+        <div className='flex flex-col'>
+          <label className=' text-BaseGray200 text-titleXS font-nunito' htmlFor="">Esta dentro da dieta?</label>
+          <div className='flex gap-6 w-full mt-2'>
             <button
               type='button'
               onClick={() => {
@@ -132,7 +132,7 @@ export function CreateMeal() {
                   <div className=' w-2 h-2 rounded-full bg-BrandRedDark disabled:bg-red-500'></div>Não
             </button>
           </div>
-          {errors.isDiet && <p>{errors.isDiet.message}</p>}
+          {errors.isDiet && <p className=' text-bodyS text-BrandRedDark font-nunito mt-4'>{errors.isDiet.message}</p>}
         </div>
         <button
           onClick={() => checkStateIsDiet()}

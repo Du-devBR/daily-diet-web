@@ -2,14 +2,65 @@ import { ArrowUpRight, Plus } from "phosphor-react";
 import { Hearder } from "../../components/hearder";
 import { Link } from "react-router-dom";
 import { Meal } from "../../components/meal";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface IPercentDiet {
+  percentMealsWithinDiet: number
+}
+
+interface IMeal {
+  createdAt: Date;
+  description: string
+  id: string
+  isDiet: boolean
+  name: string
+  userId: string
+}
 
 export function Home() {
+
+  const [percentDiet, setPercentDiet] = useState<IPercentDiet>({
+    percentMealsWithinDiet: 0
+  })
+
+  const [meals, setMeals] = useState([])
+
+  useEffect( () => {
+    const dados = async () => {
+      try {
+        const response = await axios.get("http://localhost:3333/user/f2b8b483-d834-4604-b832-6c9912b9b81a/metrics")
+        setPercentDiet(response.data.metrics)
+
+      } catch (error) {
+        console.error("erro");
+
+      }
+    }
+    dados()
+  },[])
+
+  useEffect( () => {
+    const dados = async () => {
+      try {
+        const response = await axios.get("http://localhost:3333/user/f2b8b483-d834-4604-b832-6c9912b9b81a/meal")
+        setMeals(response.data.meals)
+        console.log(response.data.meals);
+
+      } catch (error) {
+        console.error("erro");
+
+      }
+    }
+    dados()
+  },[])
+
   return (
     <div className="px-6">
       <Hearder />
       <nav className='flex justify-between w-full bg-BrandGreenLight p-5 rounded-lg mt-9'>
         <div className='flex flex-col items-center m-auto'>
-          <strong className=' font-nunito text-BaseGray100 text-titleG'>90,86%</strong>
+          <strong className=' font-nunito text-BaseGray100 text-titleG'>{percentDiet.percentMealsWithinDiet}</strong>
           <span className=' font-nunito text-BaseGray200 text-bodyS'>das refeições dentro da dieta</span>
         </div>
         <Link to={"/statistics"} className=' bg-none border-none self-start'>
@@ -26,7 +77,14 @@ export function Home() {
         </div>
         <section className=" mt-8">
           <h3 className=" text-titleS text-BaseGray100 font-nunito mb-2">12.08.12</h3>
-          <Meal />
+          {
+            meals?.map((meal: IMeal) => (
+              <Meal
+                key={meal.id}
+                name={meal.name}
+              />
+            ))
+          }
         </section>
       </main>
     </div>

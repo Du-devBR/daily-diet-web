@@ -57,6 +57,9 @@ export default {
           fontWeight: '700'
         }],
       },
+      animation: {
+        'modal-slow': 'pulse 2s linear',
+      }
 
     },
   },

@@ -1,9 +1,14 @@
 import { ArrowLeft, PencilSimpleLine, Trash } from "phosphor-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Modal } from "../../components/modal";
 
 export function MealDetail() {
+
+  const [openModal, setOpenModal] = useState(false)
+
   return (
-    <div className=" bg-BaseGray500">
+    <div className=" bg-BaseGray500 w-full min-h-screen flex flex-col justify-center items-center">
       <header className='flex items-start w-full text-center p-6'>
         <Link to={"/"}><ArrowLeft className=' w-6 h-6'/></Link>
         <h1 className=' text-titleS text-BaseGray100 font-nunito m-auto'>Nova refeição</h1>
@@ -32,12 +37,17 @@ export function MealDetail() {
           </Link>
           <button
             className=" active-outline-button w-full"
+            onClick={() => setOpenModal(true)}
               >
                 <Trash className=" w-4 h-4" />
                 Excluir refeição
           </button>
         </footer>
       </div>
+      <Modal
+        onToggleModal = {openModal}
+        onSetToggleModal = {() => setOpenModal(false)}
+      />
     </div>
   );
 }

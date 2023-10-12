@@ -13,7 +13,7 @@ export function Home() {
           <span className=' font-nunito text-BaseGray200 text-bodyS'>das refeições dentro da dieta</span>
         </div>
         <Link to={"/statistics"} className=' bg-none border-none self-start'>
-          <ArrowUpRight className=' text-BrandGreenDark w-6 h-6' />
+          <ArrowUpRight className=' text-BrandGreenDark w-6 h-6 hover:scale-125 duration-500' />
         </Link>
       </nav>
       <main className=" mt-10 w-full">

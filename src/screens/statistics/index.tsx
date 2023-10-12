@@ -1,15 +1,49 @@
+import axios from "axios";
 import { ArrowLeft } from "phosphor-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+interface IMetrics {
+  totalResgitered: number,
+	withinDiet: number,
+	offDiet: number,
+	percentMealsWithinDiet: number,
+	maxSequence: number
+}
+
 export function Statistics() {
+
+  const [metrics, setMetrics] = useState<IMetrics>({
+    totalResgitered: 0,
+    maxSequence: 0,
+    offDiet: 0,
+    percentMealsWithinDiet: 0,
+    withinDiet: 0
+  })
+
+  useEffect( () => {
+    const dados = async () => {
+      try {
+        const response = await axios.get("http://localhost:3333/user/f2b8b483-d834-4604-b832-6c9912b9b81a/metrics")
+        console.log(response.data);
+        setMetrics(response.data.metrics)
+
+      } catch (error) {
+        console.error("erro");
+
+      }
+    }
+    dados()
+  },[])
+
   return (
-    <div className="bg-BrandGreenLight ">
+    <div className={`${metrics.percentMealsWithinDiet >= 50 ? "bg-BrandGreenLight " : "bg-BrandRedLight"}`}>
       <header className=" p-6">
         <Link to={"/"} className=' bg-none border-none self-start'>
           <ArrowLeft className=' text-BrandGreenDark w-6 h-6' />
         </Link>
         <div className='flex flex-col items-center m-auto'>
-          <strong className=' font-nunito text-BaseGray100 text-titleG'>90,86%</strong>
+          <strong className=' font-nunito text-BaseGray100 text-titleG'>{metrics.percentMealsWithinDiet} %</strong>
           <span className=' font-nunito text-BaseGray200 text-bodyS'>das refeições dentro da dieta</span>
         </div>
       </header>
@@ -17,20 +51,20 @@ export function Statistics() {
         <h2 className=" font-nunito pt-8 text-titleXS text-BaseGray100">Estatísticas gerais</h2>
         <div className="flex flex-col gap-3 mt-6">
           <div className=" flex flex-col items-center rounded-lg bg-BaseGray600 p-4">
-            <strong className=' font-nunito text-BaseGray100 text-titleM'>22</strong>
+            <strong className=' font-nunito text-BaseGray100 text-titleM'>{metrics.maxSequence}</strong>
             <span className=' font-nunito text-BaseGray200 text-bodyS'>melhor sequência de pratos dentro da dieta</span>
           </div>
           <div className=" flex flex-col items-center rounded-lg bg-BaseGray600 p-4">
-            <strong className=' font-nunito text-BaseGray100 text-titleM'>109</strong>
+            <strong className=' font-nunito text-BaseGray100 text-titleM'>{metrics.totalResgitered}</strong>
             <span className=' font-nunito text-BaseGray200 text-bodyS'>refeições registradas</span>
           </div>
           <div className="flex gap-3">
             <div className=" flex flex-col items-center rounded-lg bg-BrandGreenLight p-4">
-              <strong className=' font-nunito text-BaseGray100 text-titleM'>99</strong>
+              <strong className=' font-nunito text-BaseGray100 text-titleM'>{metrics.withinDiet}</strong>
               <span className=' font-nunito text-BaseGray200 text-bodyS'>refeições dentro da dieta</span>
             </div>
             <div className=" flex flex-col items-center rounded-lg bg-BrandRedLight p-4">
-              <strong className=' font-nunito text-BaseGray100 text-titleM'>10</strong>
+              <strong className=' font-nunito text-BaseGray100 text-titleM'>{metrics.offDiet}</strong>
               <span className=' font-nunito text-BaseGray200 text-bodyS'>refeições fora da dieta</span>
             </div>
           </div>

@@ -4,19 +4,20 @@ import { Link } from "react-router-dom";
 import { Meal } from "../../components/meal";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { groupMealsByDate } from "../../util/groupedMelsByDate";
 
 interface IPercentDiet {
   percentMealsWithinDiet: number
 }
-
-interface IMeal {
-  createdAt: Date;
+export interface IMeal {
+  createdAt: string;
   description: string
   id: string
   isDiet: boolean
   name: string
   userId: string
 }
+
 
 export function Home() {
 
@@ -29,7 +30,7 @@ export function Home() {
   useEffect( () => {
     const dados = async () => {
       try {
-        const response = await axios.get("http://localhost:3333/user/f2b8b483-d834-4604-b832-6c9912b9b81a/metrics")
+        const response = await axios.get("http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/metrics")
         setPercentDiet(response.data.metrics)
 
       } catch (error) {
@@ -43,9 +44,8 @@ export function Home() {
   useEffect( () => {
     const dados = async () => {
       try {
-        const response = await axios.get("http://localhost:3333/user/f2b8b483-d834-4604-b832-6c9912b9b81a/meal")
+        const response = await axios.get("http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/meal")
         setMeals(response.data.meals)
-        console.log(response.data.meals);
 
       } catch (error) {
         console.error("erro");
@@ -55,8 +55,10 @@ export function Home() {
     dados()
   },[])
 
+  const groupedMeals = groupMealsByDate(meals);
+
   return (
-    <div className="px-6">
+    <div className="px-6 pb-6">
       <Hearder />
       <nav className='flex justify-between w-full bg-BrandGreenLight p-5 rounded-lg mt-9'>
         <div className='flex flex-col items-center m-auto'>
@@ -76,15 +78,24 @@ export function Home() {
           </Link>
         </div>
         <section className=" mt-8">
-          <h3 className=" text-titleS text-BaseGray100 font-nunito mb-2">12.08.12</h3>
           {
-            meals?.map((meal: IMeal) => (
-              <Meal
-                key={meal.id}
-                name={meal.name}
-              />
+            Object.keys(groupedMeals).map(date => (
+              <div className=" mt-8" key={date}>
+                <h2 className=" text-titleS text-BaseGray100 font-nunito mb-2">{date}</h2>
+                {
+                  groupedMeals[date].map((meal: IMeal) => (
+                    <Meal
+                      key={meal.id}
+                      name={meal.name}
+                      hour={meal.createdAt}
+                      isDiet={meal.isDiet}
+                    />
+                  ))
+                }
+              </div>
             ))
           }
+
         </section>
       </main>
     </div>

@@ -24,7 +24,7 @@ export function Statistics() {
   useEffect( () => {
     const dados = async () => {
       try {
-        const response = await axios.get("http://localhost:3333/user/f2b8b483-d834-4604-b832-6c9912b9b81a/metrics")
+        const response = await axios.get("http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/metrics")
         console.log(response.data);
         setMetrics(response.data.metrics)
 

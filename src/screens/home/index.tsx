@@ -5,6 +5,7 @@ import { Meal } from "../../components/meal";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { groupMealsByDate } from "../../util/groupedMelsByDate";
+import { formattedDate } from "../../util/formatDate";
 
 interface IPercentDiet {
   percentMealsWithinDiet: number
@@ -81,7 +82,7 @@ export function Home() {
           {
             Object.keys(groupedMeals).map(date => (
               <div className=" mt-8" key={date}>
-                <h2 className=" text-titleS text-BaseGray100 font-nunito mb-2">{date}</h2>
+                <h2 className=" text-titleS text-BaseGray100 font-nunito mb-2">{formattedDate(date)}</h2>
                 {
                   groupedMeals[date].map((meal: IMeal) => (
                     <Meal

@@ -1,7 +1,7 @@
 
 import {ArrowLeft} from 'phosphor-react'
 import { Link } from 'react-router-dom';
-import { formattedDate } from '../../util/formatDate';
+import { formattedDateForSend } from '../../util/formatDate';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
 interface IMeal {
@@ -32,7 +32,7 @@ export function EditMeal() {
       if(data && hour && isDiet !== null){
         const form = {
           ...dados,
-          createdAt: formattedDate(data, hour),
+          createdAt: formattedDateForSend(data, hour),
           isDiet: isDiet
         }
         console.log(form);

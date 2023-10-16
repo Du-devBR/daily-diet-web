@@ -1,11 +1,35 @@
 import { ArrowLeft, PencilSimpleLine, Trash } from "phosphor-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Modal } from "../../components/modal";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { fetchMealById } from "../../redux/actions/meals/meals-actions";
+import { selectError, selectLoading, selectMeals } from "../../redux/reducer/meals/meals-reducer";
 
 export function MealDetail() {
 
+  const {id} = useParams()
+  const dispatch = useDispatch<AppDispatch>()
+  const meals = useSelector(selectMeals)
+  const loading = useSelector(selectLoading)
+  const error = useSelector(selectError)
+
   const [openModal, setOpenModal] = useState(false)
+
+  useEffect(() => {
+    if(id){
+      dispatch(fetchMealById(id))
+    }
+  }, [dispatch, id])
+
+  if(loading) {
+    return <div>Loading....</div>
+  }
+
+  if(error) {
+    return <div>Error: {error}</div>
+  }
 
   return (
     <div className=" bg-BaseGray500 w-full min-h-screen flex flex-col justify-center items-center">
@@ -16,20 +40,20 @@ export function MealDetail() {
       <div className="flex flex-col gap-6 w-full calc-manege-height px-6 py-10 bg-BaseGray700 rounded-t-3xl">
         <main className=" flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <h2 className=" text-BaseGray100 text-titleM font-nunito">Saduiche</h2>
-            <p className=" text-BaseGray200 text-bodyM font-nunito">Sanduíche de pão integral com atum e salada de alface e tomate</p>
+            <h2 className=" text-BaseGray100 text-titleM font-nunito">{meals[0]?.name}</h2>
+            <p className=" text-BaseGray200 text-bodyM font-nunito">{meals[0]?.description}</p>
           </div>
           <div className="flex flex-col gap-2">
             <h2 className=" text-BaseGray100 text-titleS font-nunito">Data e hora</h2>
-            <span className=" text-BaseGray200 text-bodyM font-nunito">12/08/2022 às 16:00</span>
+            <span className=" text-BaseGray200 text-bodyM font-nunito">{meals[0]?.createdAt}</span>
           </div>
           <div className="flex gap-2 items-center py-2 px-4 rounded-full bg-BaseGray600 mr-auto">
-            <div className=' w-2 h-2 rounded-full bg-BrandGreenDark '></div>
-            <span className="text-BaseGray100 text-bodyS font-nunito">dentro da dieta</span>
+            <div className={`w-2 h-2 rounded-full ${meals[0]?.isDiet ? "bg-BrandGreenDark" : " bg-BrandRedDark"} `}></div>
+            <span className="text-BaseGray100 text-bodyS font-nunito">{meals[0]?.isDiet ? "dentro da dieta" : "fora da dieta"}</span>
           </div>
         </main>
         <footer className=" flex  flex-col gap-2 mt-auto">
-          <Link to={"/edit"}
+          <Link to={`/edit/${id}`}
             className=" active-solid-button w-full"
               >
                 <PencilSimpleLine className=" w-4 h-4" />

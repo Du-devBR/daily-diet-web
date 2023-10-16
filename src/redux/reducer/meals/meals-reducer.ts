@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IMeal } from "../../../screens/home";
-import { createNewMeal, fetchAllMeals } from "../../actions/meals/meals-actions";
+import { createNewMeal, fetchAllMeals, fetchMealById } from "../../actions/meals/meals-actions";
 import { RootState } from "../../store";
 
 interface MealsState {
@@ -33,6 +33,18 @@ const mealsSlice = createSlice({
           state.loading = false;
           state.error = action.error.message || 'Ocorreu um erro'
         })
+        .addCase(fetchMealById.pending, (state) => {
+          state.loading = true;
+          state.error = null
+        })
+        .addCase(fetchMealById.fulfilled, (state, action: PayloadAction<IMeal[]>) => {
+          state.loading = false;
+          state.meals = action.payload
+        })
+        .addCase(fetchMealById.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.error.message || 'Ocorreu um erro'
+        })
         .addCase(createNewMeal.pending, (state) => {
           state.loading = true;
           state.error = null
@@ -41,7 +53,6 @@ const mealsSlice = createSlice({
           state.loading = false;
           state.meals = [...state.meals, action.payload]
         })
-
         .addCase(createNewMeal.rejected, (state, action) => {
           state.loading = false;
           state.error = action.error.message || 'Ocorreu um erro';

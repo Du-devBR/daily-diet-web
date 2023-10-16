@@ -1,9 +1,14 @@
 
 import {ArrowLeft} from 'phosphor-react'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { formattedDateForSend } from '../../util/formatDate';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectMeals } from '../../redux/reducer/meals/meals-reducer';
+import { selectLoading, selectError } from '../../redux/reducer/metrics/metrics-reducer';
+import { AppDispatch } from '../../redux/store';
+import { fetchMealById } from '../../redux/actions/meals/meals-actions';
 interface IMeal {
   name: string,
   description: string,
@@ -14,8 +19,18 @@ interface IMeal {
 }
 
 export function EditMeal() {
+
+  const {id} = useParams()
+  const dispatch = useDispatch<AppDispatch>()
+  const meals = useSelector(selectMeals)
+  const loading = useSelector(selectLoading)
+  const error = useSelector(selectError)
+
+
+
+
   const [isDiet, setIsDiet] = useState<boolean | null>(null)
-  const {register, handleSubmit, reset, setError, clearErrors, formState: {errors}} = useForm<IMeal>()
+  const {register, handleSubmit, reset, setError, clearErrors, setValue, formState: {errors}} = useForm<IMeal>()
 
   function checkStateIsDiet(){
     if(isDiet === null){
@@ -23,6 +38,30 @@ export function EditMeal() {
         message: "Selecione sim ou não"
       })
     }
+  }
+
+  useEffect(() => {
+    if(id){
+      dispatch(fetchMealById(id))
+    }
+  }, [dispatch, id])
+
+
+  useEffect(() => {
+    if(meals){
+      setValue("name", meals[0]?.name)
+      setValue("description", meals[0]?.description)
+      setIsDiet(meals[0]?.isDiet ? true: false)
+
+    }
+  }, [meals, id, setValue])
+
+  if(loading) {
+    return <div>Loading....</div>
+  }
+
+  if(error) {
+    return <div>Error: {error}</div>
   }
 
   const handleRegisterNewMeal: SubmitHandler<IMeal> = (dados) =>{
@@ -50,7 +89,7 @@ export function EditMeal() {
   return (
     <div className=" bg-BaseGray500">
       <header className='flex items-start w-full text-center p-6'>
-        <Link to={"/meal"}><ArrowLeft className=' w-6 h-6'/></Link>
+        <Link to={`/meal/${id}`}><ArrowLeft className=' w-6 h-6'/></Link>
         <h1 className=' text-titleS text-BaseGray100 font-nunito m-auto'>Editar refeição</h1>
       </header>
       <form

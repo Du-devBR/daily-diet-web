@@ -15,7 +15,7 @@ import { groupMealsByDate } from "../../util/groupedMelsByDate";
 export interface IMeal {
   createdAt: string;
   description: string
-  id?: string
+  id: string
   isDiet: boolean
   name: string
   userId?: string
@@ -74,6 +74,7 @@ export function Home() {
                   groupCreatedat[date].map((meal: IMeal) => (
                     <Meal
                       key={meal.id}
+                      id={meal.id}
                       name={meal.name}
                       hour={meal.createdAt}
                       isDiet={meal.isDiet}

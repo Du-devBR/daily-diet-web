@@ -3,6 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { formattedDateForSend } from '../../util/formatDate';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { createNewMeal } from '../../redux/actions/meals/meals-actions';
+import { selectError, selectLoading } from '../../redux/reducer/meals/meals-reducer';
 interface IMeal {
   name: string,
   description: string,
@@ -13,6 +17,9 @@ interface IMeal {
 }
 
 export function CreateMeal() {
+  const dispatch = useDispatch<AppDispatch>()
+  const loading = useSelector(selectLoading)
+  const error = useSelector(selectError)
   const [isDiet, setIsDiet] = useState<boolean | null>(null)
   const navigate = useNavigate()
   const {register, handleSubmit, reset, setError, clearErrors, formState: {errors}} = useForm<IMeal>()
@@ -35,6 +42,8 @@ export function CreateMeal() {
           createdAt: formattedDateForSend(data, hour),
           isDiet: isDiet
         }
+
+        dispatch(createNewMeal(form))
         console.log(form);
         reset()
         setIsDiet(null)
@@ -48,6 +57,14 @@ export function CreateMeal() {
         })
       }
     }
+  }
+
+  if(loading) {
+    return <div>Loading....</div>
+  }
+
+  if(error) {
+    return <div>Error: {error}</div>
   }
 
   return (

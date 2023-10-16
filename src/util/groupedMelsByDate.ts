@@ -4,13 +4,15 @@ export const groupMealsByDate = (meal: IMeal[]): Record<string, IMeal[]> => {
   const groupedRefeicoes: Record<string, IMeal[]> = {};
 
   meal.forEach((meal) => {
-    const date = meal.createdAt.slice(0, 10);
+    if(meal.createdAt){
+      const date = meal.createdAt.slice(0, 10);
 
-    if (!groupedRefeicoes[date]) {
-      groupedRefeicoes[date] = [];
+      if (!groupedRefeicoes[date]) {
+        groupedRefeicoes[date] = [];
+      }
+
+      groupedRefeicoes[date].push(meal);
     }
-
-    groupedRefeicoes[date].push(meal);
   });
 
   return groupedRefeicoes;

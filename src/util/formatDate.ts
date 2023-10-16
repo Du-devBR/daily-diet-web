@@ -19,3 +19,19 @@ export function  formattedDate(apiDate: string){
   const formattedDate = format(date, "dd.MM.yy");
   return formattedDate;
 }
+
+
+export function sliceToDate(createdAt: string){
+  const dateString = createdAt.split("T")
+
+  const sliceDate = {
+    date: dateString[0],
+    hour: dateString[1].substring(0, 5)
+  }
+
+  return sliceDate
+}
+
+// const parts = createdAtString.split("T");
+//         const dataFormatada = parts[0];
+//         const horaFormatada = parts[1].substring(0, 5);

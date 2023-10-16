@@ -1,9 +1,13 @@
-import axios from "axios";
-import { ArrowLeft } from "phosphor-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
-interface IMetrics {
+import { ArrowLeft } from "phosphor-react";
+import { useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { selectError, selectLoading, selectMetrics } from "../../redux/reducer/metrics/metrics-reducer";
+import { fetchMetrics } from "../../redux/actions/metrics/metrics-actions";
+import { AppDispatch } from "../../redux/store";
+
+export interface IMetrics {
   totalResgitered: number,
 	withinDiet: number,
 	offDiet: number,
@@ -13,28 +17,22 @@ interface IMetrics {
 
 export function Statistics() {
 
-  const [metrics, setMetrics] = useState<IMetrics>({
-    totalResgitered: 0,
-    maxSequence: 0,
-    offDiet: 0,
-    percentMealsWithinDiet: 0,
-    withinDiet: 0
-  })
+  const dispatch = useDispatch<AppDispatch>()
+  const metrics = useSelector(selectMetrics)
+  const loading = useSelector(selectLoading)
+  const error = useSelector(selectError)
 
-  useEffect( () => {
-    const dados = async () => {
-      try {
-        const response = await axios.get("http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/metrics")
-        console.log(response.data);
-        setMetrics(response.data.metrics)
+  useEffect(() => {
+    dispatch(fetchMetrics())
+  },[dispatch])
 
-      } catch (error) {
-        console.error("erro");
+  if(loading) {
+    return <div>Loading .....</div>
+  }
 
-      }
-    }
-    dados()
-  },[])
+  if(error) {
+    return <div>Error: {error}</div>
+  }
 
   return (
     <div className={`${metrics.percentMealsWithinDiet >= 50 ? "bg-BrandGreenLight " : "bg-BrandRedLight"}`}>

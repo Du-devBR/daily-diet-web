@@ -1,7 +1,7 @@
 
 import {ArrowLeft} from 'phosphor-react'
 import { Link, useParams } from 'react-router-dom';
-import { formattedDateForSend } from '../../util/formatDate';
+import { formattedDateForSend, sliceToDate } from '../../util/formatDate';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,9 +26,6 @@ export function EditMeal() {
   const loading = useSelector(selectLoading)
   const error = useSelector(selectError)
 
-
-
-
   const [isDiet, setIsDiet] = useState<boolean | null>(null)
   const {register, handleSubmit, reset, setError, clearErrors, setValue, formState: {errors}} = useForm<IMeal>()
 
@@ -49,10 +46,14 @@ export function EditMeal() {
 
   useEffect(() => {
     if(meals){
-      setValue("name", meals[0]?.name)
-      setValue("description", meals[0]?.description)
-      setIsDiet(meals[0]?.isDiet ? true: false)
-
+      const createdAtString = meals[0]?.createdAt;
+      if(createdAtString){
+        setValue("name", meals[0]?.name)
+        setValue("description", meals[0]?.description)
+        setIsDiet(meals[0]?.isDiet ? true: false)
+        setValue('data', sliceToDate(createdAtString).date)
+        setValue('hour', sliceToDate(createdAtString).hour)
+      }
     }
   }, [meals, id, setValue])
 

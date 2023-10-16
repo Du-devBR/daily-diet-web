@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectMeals } from '../../redux/reducer/meals/meals-reducer';
 import { selectLoading, selectError } from '../../redux/reducer/metrics/metrics-reducer';
 import { AppDispatch } from '../../redux/store';
-import { fetchMealById } from '../../redux/actions/meals/meals-actions';
+import { fetchMealById, updateMeal } from '../../redux/actions/meals/meals-actions';
 interface IMeal {
+  id: string
   name: string,
   description: string,
   data?: string,
@@ -76,6 +77,9 @@ export function EditMeal() {
           isDiet: isDiet
         }
         console.log(form);
+        if(id){
+          dispatch(updateMeal({id: id, meal: form}))
+        }
         reset()
         setIsDiet(null)
       }

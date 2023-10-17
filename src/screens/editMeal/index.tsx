@@ -1,6 +1,6 @@
 
 import {ArrowLeft} from 'phosphor-react'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { formattedDateForSend, sliceToDate } from '../../util/formatDate';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
@@ -22,6 +22,7 @@ interface IMeal {
 export function EditMeal() {
 
   const {id} = useParams()
+  const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const meals = useSelector(selectMeals)
   const loading = useSelector(selectLoading)
@@ -58,15 +59,7 @@ export function EditMeal() {
     }
   }, [meals, id, setValue])
 
-  if(loading) {
-    return <div>Loading....</div>
-  }
-
-  if(error) {
-    return <div>Error: {error}</div>
-  }
-
-  const handleRegisterNewMeal: SubmitHandler<IMeal> = (dados) =>{
+  const handleRegisterNewMeal: SubmitHandler<IMeal> = async (dados) =>{
     const { data, hour } = dados;
 
     if(Object.keys(errors).length === 0){
@@ -76,12 +69,17 @@ export function EditMeal() {
           createdAt: formattedDateForSend(data, hour),
           isDiet: isDiet
         }
-        console.log(form);
-        if(id){
-          dispatch(updateMeal({id: id, meal: form}))
+        try {
+          if(id){
+            await dispatch(updateMeal({id: id, meal: form}))
+          }
+          reset()
+          setIsDiet(null)
+          navigate(`/meal/${id}`)
+        } catch (error) {
+          console.log(error);
+
         }
-        reset()
-        setIsDiet(null)
       }
       if(isDiet === null){
         setError('isDiet', {
@@ -89,6 +87,14 @@ export function EditMeal() {
         })
       }
     }
+  }
+
+  if(loading) {
+    return <div>Loading....</div>
+  }
+
+  if(error) {
+    return <div>Error: {error}</div>
   }
 
   return (

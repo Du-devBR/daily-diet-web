@@ -31,6 +31,7 @@ export function MealDetail() {
     return <div>Error: {error}</div>
   }
 
+
   return (
     <div className=" bg-BaseGray500 w-full min-h-screen flex flex-col justify-center items-center">
       <header className='flex items-start w-full text-center p-6'>

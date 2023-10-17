@@ -8,6 +8,7 @@ import { AppDispatch } from '../../redux/store';
 import { createNewMeal } from '../../redux/actions/meals/meals-actions';
 import { selectError, selectLoading } from '../../redux/reducer/meals/meals-reducer';
 interface IMeal {
+  id: string
   name: string,
   description: string,
   data?: string,

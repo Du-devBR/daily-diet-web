@@ -31,7 +31,3 @@ export function sliceToDate(createdAt: string){
 
   return sliceDate
 }
-
-// const parts = createdAtString.split("T");
-//         const dataFormatada = parts[0];
-//         const horaFormatada = parts[1].substring(0, 5);

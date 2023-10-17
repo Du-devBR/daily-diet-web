@@ -31,3 +31,12 @@ export function sliceToDate(createdAt: string){
 
   return sliceDate
 }
+
+export function formattedDataAndHour(createdAt: string){
+  if(createdAt){
+    const sliceCreated = createdAt.replace(/-03$/, '0')
+    const newDateCreated = new Date(sliceCreated)
+
+    return format(newDateCreated, 'dd/MM/yyyy \'às\' HH:mm')
+  }
+}

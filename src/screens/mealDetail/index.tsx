@@ -1,15 +1,17 @@
 import { ArrowLeft, PencilSimpleLine, Trash } from "phosphor-react";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Modal } from "../../components/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { fetchMealById } from "../../redux/actions/meals/meals-actions";
+import { deleteMeal, fetchMealById } from "../../redux/actions/meals/meals-actions";
 import { selectError, selectLoading, selectMeals } from "../../redux/reducer/meals/meals-reducer";
+import { formattedDataAndHour } from "../../util/formatDate";
 
 export function MealDetail() {
 
   const {id} = useParams()
+  const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const meals = useSelector(selectMeals)
   const loading = useSelector(selectLoading)
@@ -23,6 +25,20 @@ export function MealDetail() {
     }
   }, [dispatch, id])
 
+  const handleDeleteMeal = async () => {
+    setOpenModal(false)
+
+    try {
+      if(id){
+       await dispatch(deleteMeal(id))
+      }
+      navigate('/')
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
   if(loading) {
     return <div>Loading....</div>
   }
@@ -30,7 +46,6 @@ export function MealDetail() {
   if(error) {
     return <div>Error: {error}</div>
   }
-
 
   return (
     <div className=" bg-BaseGray500 w-full min-h-screen flex flex-col justify-center items-center">
@@ -46,7 +61,7 @@ export function MealDetail() {
           </div>
           <div className="flex flex-col gap-2">
             <h2 className=" text-BaseGray100 text-titleS font-nunito">Data e hora</h2>
-            <span className=" text-BaseGray200 text-bodyM font-nunito">{meals[0]?.createdAt}</span>
+            <span className=" text-BaseGray200 text-bodyM font-nunito">{formattedDataAndHour(meals[0]?.createdAt)}</span>
           </div>
           <div className="flex gap-2 items-center py-2 px-4 rounded-full bg-BaseGray600 mr-auto">
             <div className={`w-2 h-2 rounded-full ${meals[0]?.isDiet ? "bg-BrandGreenDark" : " bg-BrandRedDark"} `}></div>
@@ -72,6 +87,7 @@ export function MealDetail() {
       <Modal
         onToggleModal = {openModal}
         onSetToggleModal = {() => setOpenModal(false)}
+        onDelete={handleDeleteMeal}
       />
     </div>
   );

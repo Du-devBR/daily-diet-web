@@ -5,8 +5,9 @@ import { Modal } from "../../components/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { deleteMeal, fetchMealById } from "../../redux/actions/meals/meals-actions";
-import { selectError, selectLoading, selectMeals } from "../../redux/reducer/meals/meals-reducer";
+import { selectLoading, selectMeals, selectStatus } from "../../redux/reducer/meals/meals-reducer";
 import { formattedDataAndHour } from "../../util/formatDate";
+import Swal from "sweetalert2";
 
 export function MealDetail() {
 
@@ -15,7 +16,7 @@ export function MealDetail() {
   const dispatch = useDispatch<AppDispatch>()
   const meals = useSelector(selectMeals)
   const loading = useSelector(selectLoading)
-  const error = useSelector(selectError)
+  const statusCode = useSelector(selectStatus)
 
   const [openModal, setOpenModal] = useState(false)
 
@@ -30,9 +31,33 @@ export function MealDetail() {
 
     try {
       if(id){
-       await dispatch(deleteMeal(id))
+       await dispatch(deleteMeal(id)).then((result) => {
+        const status = result.payload
+        if(status === 200){
+          Swal.fire({
+            icon: "success",
+            title: "Atualizado com sucesso!",
+            timer: 2000,
+            showConfirmButton: false
+          }).then((result) => {
+            if(result.dismiss === Swal.DismissReason.timer){
+              navigate('/')
+            }
+          })
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Erro ao atualizar",
+            timer: 2000,
+            showConfirmButton: false
+          }).then((result) => {
+            if(result.dismiss === Swal.DismissReason.timer){
+              navigate(`/meal/${id}`)
+            }
+          })
+        }
+       })
       }
-      navigate('/')
     } catch (error) {
       console.log(error);
 
@@ -43,9 +68,10 @@ export function MealDetail() {
     return <div>Loading....</div>
   }
 
-  if(error) {
-    return <div>Error: {error}</div>
-  }
+
+
+  console.log(statusCode);
+
 
   return (
     <div className=" bg-BaseGray500 w-full min-h-screen flex flex-col justify-center items-center">

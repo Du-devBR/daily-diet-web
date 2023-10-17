@@ -5,10 +5,10 @@ import { formattedDateForSend, sliceToDate } from '../../util/formatDate';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMeals } from '../../redux/reducer/meals/meals-reducer';
-import { selectLoading, selectError } from '../../redux/reducer/metrics/metrics-reducer';
+import { selectError, selectLoading, selectMeals } from '../../redux/reducer/meals/meals-reducer';
 import { AppDispatch } from '../../redux/store';
 import { fetchMealById, updateMeal } from '../../redux/actions/meals/meals-actions';
+import Swal from 'sweetalert2';
 interface IMeal {
   id: string
   name: string,
@@ -71,13 +71,40 @@ export function EditMeal() {
         }
         try {
           if(id){
-            await dispatch(updateMeal({id: id, meal: form}))
+            await dispatch(updateMeal({id: id, meal: form})).then((result) => {
+              const status = result.payload
+              if(status === 200){
+                reset()
+                setIsDiet(null)
+                Swal.fire({
+                  icon: "success",
+                  title: "Atualizado com sucesso!",
+                  timer: 2000,
+                  showConfirmButton: false
+                }).then((resul) => {
+                  if(resul.dismiss === Swal.DismissReason.timer){
+                    navigate(`/meal/${id}`)
+                  }
+                })
+              }else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Erro ao atualizar",
+                  timer: 2000,
+                  showConfirmButton: false
+                }).then((resul) => {
+                  if(resul.dismiss === Swal.DismissReason.timer){
+                    navigate(`/meal/${id}`)
+                  }
+                })
+              }
+
+            })
           }
-          reset()
-          setIsDiet(null)
-          navigate(`/meal/${id}`)
+
+
         } catch (error) {
-          console.log(error);
+          error
 
         }
       }
@@ -90,12 +117,15 @@ export function EditMeal() {
   }
 
   if(loading) {
-    return <div>Loading....</div>
+    return <div>....loadixng</div>
   }
 
   if(error) {
-    return <div>Error: {error}</div>
+
+    return <div>Erro: {error}</div>
+
   }
+
 
   return (
     <div className=" bg-BaseGray500">

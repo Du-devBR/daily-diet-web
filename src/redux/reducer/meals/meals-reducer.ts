@@ -7,12 +7,15 @@ interface MealsState {
   meals: IMeal[];
   loading: boolean;
   error: string | null;
+  statusCode: number | null
 }
 
 const initialState: MealsState = {
+
   meals: [],
   loading: false,
-  error: null
+  error: null,
+  statusCode: null
 }
 
 const mealsSlice = createSlice({
@@ -62,21 +65,21 @@ const mealsSlice = createSlice({
           state.loading = true;
           state.error = null
         })
-        .addCase(updateMeal.fulfilled, (state, action: PayloadAction<IMeal>) => {
+        .addCase(updateMeal.fulfilled, (state, action) => {
           state.loading = false;
-          state.meals = [action.payload]
+          state.statusCode = action.payload
         })
         .addCase(updateMeal.rejected, (state, action) => {
           state.loading = false;
-          state.error = action.error.message || 'Ocorreu um erro';
+          state.error = action.error.message || "Servidor fora do ar";
         })
         .addCase(deleteMeal.pending, (state) => {
           state.loading = true;
           state.error = null
         })
-        .addCase(deleteMeal.fulfilled, (state, action: PayloadAction<IMeal>) => {
+        .addCase(deleteMeal.fulfilled, (state, action) => {
           state.loading = false;
-          state.meals = [...state.meals, action.payload]
+          state.statusCode = action.payload
         })
         .addCase(deleteMeal.rejected, (state, action) => {
           state.loading = false;
@@ -88,5 +91,6 @@ const mealsSlice = createSlice({
 export const selectMeals = (state: RootState) => state.meals.meals
 export const selectLoading = (state: RootState) => state.meals.loading
 export const selectError = (state: RootState) => state.meals.error
+export const selectStatus = (state: RootState) => state.meals.statusCode
 
 export default mealsSlice.reducer

@@ -22,3 +22,9 @@ export const updateMeal = createAsyncThunk('meals/updateMeal', async({id, meal}:
 
   return await response.data as IMeal
 })
+
+export const deleteMeal = createAsyncThunk('meals/deleteMeal', async(id: string) => {
+  const response = await axios.delete(`http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/meal/${id}`)
+
+  return await response.data as IMeal
+})

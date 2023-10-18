@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { createNewMeal } from '../../redux/actions/meals/meals-actions';
 import { selectError, selectLoading } from '../../redux/reducer/meals/meals-reducer';
+import Swal from 'sweetalert2';
 interface IMeal {
   id: string
   name: string,
@@ -33,7 +34,7 @@ export function CreateMeal() {
     }
   }
 
-  const handleRegisterNewMeal: SubmitHandler<IMeal> = (dados) =>{
+  const handleRegisterNewMeal: SubmitHandler<IMeal> = async (dados) =>{
     const { data, hour } = dados;
 
     if(Object.keys(errors).length === 0){
@@ -44,13 +45,38 @@ export function CreateMeal() {
           isDiet: isDiet
         }
 
-        dispatch(createNewMeal(form))
-        console.log(form);
-        reset()
-        setIsDiet(null)
-
-        navigate(`/feedback/${isDiet}`)
-
+        try {
+          await dispatch(createNewMeal(form)).then((result) => {
+            const status = result.payload
+            if(status === 201){
+              reset()
+              setIsDiet(null)
+              Swal.fire({
+                icon: "success",
+                title: "Atualizado com sucesso!",
+                timer: 2000,
+                showConfirmButton: false
+              }).then((resul) => {
+                if(resul.dismiss === Swal.DismissReason.timer){
+                  navigate(`/feedback/${isDiet}`)
+                }
+              })
+            }else {
+              Swal.fire({
+                icon: "error",
+                title: "Erro ao atualizar",
+                timer: 2000,
+                showConfirmButton: false
+              }).then((resul) => {
+                if(resul.dismiss === Swal.DismissReason.timer){
+                  navigate("/")
+                }
+              })
+            }
+          })
+        } catch (error) {
+          error
+        }
       }
       if(isDiet === null){
         setError('isDiet', {
@@ -61,11 +87,13 @@ export function CreateMeal() {
   }
 
   if(loading) {
-    return <div>Loading....</div>
+    return <div>....loading</div>;
+
   }
 
   if(error) {
-    return <div>Error: {error}</div>
+    return <div>error</div>;
+
   }
 
   return (

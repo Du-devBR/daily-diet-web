@@ -14,7 +14,7 @@ export const fetchMealById = createAsyncThunk('meals/fetchMealById', async(id: s
 
 export const createNewMeal = createAsyncThunk('meals/createNewMeal', async(meal: IMeal) => {
   const response = await axios.post('http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/meal', meal)
-  return await response.data as IMeal
+  return  response.status
 })
 
 export const updateMeal = createAsyncThunk('meals/updateMeal', async({id, meal}: {id: string, meal: IMeal}) => {

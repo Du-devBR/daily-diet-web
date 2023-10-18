@@ -2,10 +2,11 @@ import { Route, Routes } from "react-router-dom";
 import { Home } from "../screens/home";
 import { Checkin } from "../screens/checkin";
 import { Statistics } from "../screens/statistics";
-import { CreateMeal } from "../screens/createMeal";
 import { EditMeal } from "../screens/editMeal";
 import { Feedback } from "../screens/feedback";
 import { MealDetail } from "../screens/mealDetail";
+import { NotFound } from "../screens/404/notFound";
+import { CreateMeal } from "../screens/createMeal";
 
 
 export function Router(){
@@ -18,6 +19,7 @@ export function Router(){
       <Route path="/edit/:id" element={<EditMeal />}/>
       <Route path="/feedback/:status" element={<Feedback />}/>
       <Route path="/meal/:id" element={<MealDetail />} />
+      <Route path="/notFound" element={<NotFound />} />
     </Routes>
   )
 }

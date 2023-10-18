@@ -52,9 +52,9 @@ const mealsSlice = createSlice({
           state.loading = true;
           state.error = null
         })
-        .addCase(createNewMeal.fulfilled, (state, action: PayloadAction<IMeal>) => {
+        .addCase(createNewMeal.fulfilled, (state, action) => {
           state.loading = false;
-          state.meals = [...state.meals, action.payload]
+          state.statusCode = action.payload
         })
         .addCase(createNewMeal.rejected, (state, action) => {
           state.loading = false;

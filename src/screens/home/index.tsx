@@ -1,6 +1,6 @@
 import { ArrowUpRight, Plus } from "phosphor-react";
 import { Hearder } from "../../components/hearder";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Meal } from "../../components/meal";
 import { useEffect} from "react";
 import { formattedDate } from "../../util/formatDate";
@@ -11,6 +11,9 @@ import { AppDispatch } from "../../redux/store";
 import { fetchMetrics } from "../../redux/actions/metrics/metrics-actions";
 import { selectMetrics } from "../../redux/reducer/metrics/metrics-reducer";
 import { groupMealsByDate } from "../../util/groupedMelsByDate";
+
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export interface IMeal {
   createdAt: string;
@@ -23,6 +26,7 @@ export interface IMeal {
 
 export function Home() {
 
+  const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const meals = useSelector(selectMeals)
   const metrics = useSelector(selectMetrics)
@@ -30,17 +34,12 @@ export function Home() {
   const error = useSelector(selectError)
 
   useEffect( () => {
-
     dispatch(fetchAllMeals())
     dispatch(fetchMetrics())
   },[dispatch])
 
-  if(loading) {
-    return <div>Loading....</div>
-  }
-
   if(error) {
-    return <div>Error: {error}</div>
+    navigate("/notFound")
   }
 
   const groupCreatedat = groupMealsByDate(meals)
@@ -67,6 +66,7 @@ export function Home() {
         </div>
         <section className=" mt-8">
           {
+            loading ?  <Skeleton className="flex gap-3 items-center py-4 px-3 w-full border border-BaseGray500 rounded-md" count={10} />:
             Object.keys(groupCreatedat).map(date => (
               <div className=" mt-8" key={date}>
                 <h2 className=" text-titleS text-BaseGray100 font-nunito mb-2">{formattedDate(date)}</h2>

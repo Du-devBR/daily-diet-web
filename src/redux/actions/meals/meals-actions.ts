@@ -1,30 +1,55 @@
 import axios from "axios"
 import {createAsyncThunk} from '@reduxjs/toolkit'
 import { IMeal } from "../../../screens/home"
+import { getTokenUser } from "../../../util/tokenUtils"
+
+
+const localStorageToken = localStorage.getItem('token')
+const userId = getTokenUser(localStorageToken as string)
 
 export const fetchAllMeals = createAsyncThunk('meals/fetchMeals', async () => {
-  const response = await axios.get('http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/meal')
+
+  const option = {
+    Authorization: `Bearer ${localStorageToken}`
+  }
+  const response = await axios.get(`http://localhost:3333/user/${userId}/meal`, {headers: option})
   return (await response.data.meals as IMeal[])
 })
 
 export const fetchMealById = createAsyncThunk('meals/fetchMealById', async(id: string) => {
-  const response = await axios.get(`http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/meal/${id}`)
+  const localStorageToken = localStorage.getItem('token')
+  const option = {
+    Authorization: `Bearer ${localStorageToken}`
+  }
+  const response = await axios.get(`http://localhost:3333/user/${userId}/meal/${id}`, {headers: option})
   return await response.data.meal as IMeal[]
 })
 
 export const createNewMeal = createAsyncThunk('meals/createNewMeal', async(meal: IMeal) => {
-  const response = await axios.post('http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/meal', meal)
+  const localStorageToken = localStorage.getItem('token')
+  const option = {
+    Authorization: `Bearer ${localStorageToken}`
+  }
+  const response = await axios.post(`http://localhost:3333/user/${userId}/meal`, meal, {headers: option})
   return  response.status
 })
 
 export const updateMeal = createAsyncThunk('meals/updateMeal', async({id, meal}: {id: string, meal: IMeal}) => {
-    const response = await axios.put(`http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/meal/${id}`, meal)
-    return response.status
+  const localStorageToken = localStorage.getItem('token')
+  const option = {
+    Authorization: `Bearer ${localStorageToken}`
+  }
+  const response = await axios.put(`http://localhost:3333/user/${userId}/meal/${id}`, meal, {headers: option})
+  return response.status
 
 })
 
 export const deleteMeal = createAsyncThunk('meals/deleteMeal', async(id: string) => {
-  const response = await axios.delete(`http://localhost:3333/user/7a7995cd-4278-4fd3-8411-84384269b872/meal/${id}`)
+  const localStorageToken = localStorage.getItem('token')
+  const option = {
+    Authorization: `Bearer ${localStorageToken}`
+  }
+  const response = await axios.delete(`http://localhost:3333/user/${userId}/meal/${id}`, {headers: option})
 
   return  response.status
 })

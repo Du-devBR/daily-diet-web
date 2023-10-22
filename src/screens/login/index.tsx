@@ -2,31 +2,43 @@ import { EyeSlash } from 'phosphor-react';
 import logo from '../../assets/logo.png'
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectError, selectLoading } from '../../redux/reducer/login/login-reducer';
+import { AppDispatch } from '../../redux/store';
+import { fetchLoginUser } from '../../redux/actions/login/login-action';
+
+export interface Ilogin {
+  email: string,
+  password: string
+}
 
 export function Login() {
 
-  interface Ilogin {
-    email: string,
-    password: string
-  }
-
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
+  const loading = useSelector(selectLoading)
+  const error = useSelector(selectError)
 
   const {register, handleSubmit} = useForm<Ilogin>()
 
   const handlesubmitLoginUser = async (data: Ilogin) => {
 
     try {
-      const response = await axios.post("http://localhost:3333/user/login", data )
-      console.log(response.data);
-      localStorage.setItem("token", response.data.token)
+      dispatch(fetchLoginUser(data))
+      // localStorage.setItem("token", response.data.token)
 
       navigate("/")
 
     }catch(error){
       console.error(error)
     }
+  }
+
+  if(loading){
+    return <div>...loading</div>
+  }
+  if(error) {
+    return <div>error: {error}</div>
   }
 
   return (

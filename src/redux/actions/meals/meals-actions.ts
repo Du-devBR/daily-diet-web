@@ -4,11 +4,10 @@ import { IMeal } from "../../../screens/home"
 import { getTokenUser } from "../../../util/tokenUtils"
 
 
-const localStorageToken = localStorage.getItem('token')
-const userId = getTokenUser(localStorageToken as string)
-
 export const fetchAllMeals = createAsyncThunk('meals/fetchMeals', async () => {
 
+  const localStorageToken = localStorage.getItem('token')
+  const userId = localStorageToken ?  getTokenUser(localStorageToken as string): null
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }
@@ -18,6 +17,7 @@ export const fetchAllMeals = createAsyncThunk('meals/fetchMeals', async () => {
 
 export const fetchMealById = createAsyncThunk('meals/fetchMealById', async(id: string) => {
   const localStorageToken = localStorage.getItem('token')
+  const userId = localStorageToken ?  getTokenUser(localStorageToken as string): null
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }
@@ -27,6 +27,7 @@ export const fetchMealById = createAsyncThunk('meals/fetchMealById', async(id: s
 
 export const createNewMeal = createAsyncThunk('meals/createNewMeal', async(meal: IMeal) => {
   const localStorageToken = localStorage.getItem('token')
+  const userId = localStorageToken ?  getTokenUser(localStorageToken as string): null
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }
@@ -36,6 +37,7 @@ export const createNewMeal = createAsyncThunk('meals/createNewMeal', async(meal:
 
 export const updateMeal = createAsyncThunk('meals/updateMeal', async({id, meal}: {id: string, meal: IMeal}) => {
   const localStorageToken = localStorage.getItem('token')
+  const userId = localStorageToken ?  getTokenUser(localStorageToken as string): null
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }
@@ -46,6 +48,7 @@ export const updateMeal = createAsyncThunk('meals/updateMeal', async({id, meal}:
 
 export const deleteMeal = createAsyncThunk('meals/deleteMeal', async(id: string) => {
   const localStorageToken = localStorage.getItem('token')
+  const userId = localStorageToken ?  getTokenUser(localStorageToken as string): null
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }

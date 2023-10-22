@@ -5,8 +5,8 @@ interface IToken {
   iat: number
 }
 
-export const getTokenUser =  (token: string) => {
-  const {sub} =  jwtDecode<IToken>(token)
+export const getTokenUser = (token: string) => {
+  const {sub} = jwtDecode<IToken>(token)
 
   return sub
 }

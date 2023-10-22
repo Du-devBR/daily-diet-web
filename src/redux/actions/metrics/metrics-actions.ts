@@ -3,11 +3,9 @@ import axios from "axios";
 import { IMetrics } from "../../../screens/statistics";
 import { getTokenUser } from "../../../util/tokenUtils";
 
-const localStorageToken = localStorage.getItem('token')
-const userId = getTokenUser(localStorageToken as string)
-
 export const fetchMetrics = createAsyncThunk('metrics/fetchMetrics', async () => {
   const localStorageToken = localStorage.getItem('token')
+  const userId = localStorageToken ? getTokenUser(localStorageToken as string): null
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }

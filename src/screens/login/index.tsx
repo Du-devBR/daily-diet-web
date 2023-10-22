@@ -24,8 +24,7 @@ export function Login() {
   const handlesubmitLoginUser = async (data: Ilogin) => {
 
     try {
-      dispatch(fetchLoginUser(data))
-      // localStorage.setItem("token", response.data.token)
+      await dispatch(fetchLoginUser(data))
 
       navigate("/")
 

@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import mealsReducer from "./reducer/meals/meals-reducer";
 import metricsReducer from "./reducer/metrics/metrics-reducer";
 import loginReducer from "./reducer/login/login-reducer";
+import regiterReducer from "./reducer/register/regiter-reducer";
 
 export const store = configureStore({
   reducer: {
     meals: mealsReducer,
     metrics: metricsReducer,
-    login: loginReducer
+    login: loginReducer,
+    regiter: regiterReducer
   }
 })
 

@@ -1,55 +1,59 @@
 import { Eye, EyeSlash } from 'phosphor-react';
 import logo from '../../assets/logo.png'
-import { Link} from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-// import Swal from 'sweetalert2';
-// import { TailSpin } from 'react-loader-spinner';
-
-
+import { AppDispatch } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { fetchRegisterUser } from '../../redux/actions/register/register-action';
+import { selectLoading } from '../../redux/reducer/register/regiter-reducer';
+import { TailSpin } from 'react-loader-spinner';
 
 export interface IRegister {
   name: string,
+  lastname: string
   email: string,
   password: string,
   confirmPassword: string
-
 }
 
 export function Register() {
 
-  // const navigate = useNavigate()
-  // const dispatch = useDispatch<AppDispatch>()
-  // const loading = useSelector(selectLoading)
+  const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
+  const loading = useSelector(selectLoading)
 
   const {register, handleSubmit,  getValues, formState:{errors}} = useForm<IRegister>()
   const [togglePassword, setTogglePassword] = useState(false)
+  const [toggleAviso, setToggleAviso] = useState(false)
 
-  const handlesubmitLoginUser = async (data: IRegister) => {
+  const handleSubmitRegisterUser = async (data: IRegister) => {
 
     if(Object.keys(errors).length === 0){
       try {
-        // await dispatch(fetchLoginUser(data)).then((result) => {
-        //   if(result.payload){
-        //     Swal.fire({
-        //       icon: "success",
-        //       title: "Login feito com sucesso!",
-        //       timer: 2000,
-        //       showConfirmButton: false
-        //     }).then((resul) => {
-        //       if(resul.dismiss === Swal.DismissReason.timer){
-        //         navigate(`/`)
-        //       }
-        //     })
-        //   }else {
-        //     Swal.fire({
-        //       icon: "error",
-        //       title: "Erro ao fazer login",
-        //       timer: 2000,
-        //       showConfirmButton: false
-        //     })
-        //   }
-        // })
+        await dispatch(fetchRegisterUser(data)).then((result) => {
+          if(result.payload){
+            Swal.fire({
+              icon: "success",
+              title: "Usuario registrado com sucesso!",
+              timer: 2000,
+              showConfirmButton: false
+            }).then((resul) => {
+              if(resul.dismiss === Swal.DismissReason.timer){
+                navigate(`/login`)
+              }
+            })
+          }else {
+            Swal.fire({
+              icon: "error",
+              title: "Erro ao cadastrar usuario",
+              timer: 2000,
+              showConfirmButton: false
+            })
+          }
+        })
+        console.log(data);
 
       }catch(error){
         console.error(error)
@@ -58,13 +62,13 @@ export function Register() {
   }
 
   return (
-    <div className='flex flex-col items-center w-full h-screen bg-BrandGreenLight'>
+    <div className='flex flex-col items-center w-full min-h-screen bg-BrandGreenLight'>
       <div className='w-full h-full flex flex-col justify-between px-6 py-8'>
         <header className='flex flex-col  items-center gap-4'>
           <img className='w-full max-w-[101px]' src={logo} alt="" />
           <p className=' text-titleS text-BaseGray300 font-nunito'>Você no controle sempre</p>
         </header>
-        {/* {loading ?
+        {loading ?
           <div className=' flex justify-center items-center'>
             <TailSpin
               height="80"
@@ -75,15 +79,24 @@ export function Register() {
               wrapperStyle={{}}
               wrapperClass=""
               visible={true}
-            /> */}
-          {/* </div> */}
-          <form onSubmit={handleSubmit(handlesubmitLoginUser)} action="" className='w-full flex flex-col items-center'>
+            />
+          </div>:
+          <form onSubmit={handleSubmit(handleSubmitRegisterUser)} action="" className='w-full flex flex-col items-center'>
           <h1 className=' text-BaseGray100 text-titleM font-nunito mb-6'>Acesse sua conta</h1>
           <input
             type="text"
             className='w-full mb-4 px-2 py-4 rounded-lg bg-BaseGray700 text-bodyM text-BaseGray200 font-nunito outline-none placeholder:text-BaseGray300'
             placeholder='Nome'
             {...register('name', {
+              required: "Nome obrigatório",
+              minLength: 2
+            })}
+          />
+          <input
+            type="text"
+            className='w-full mb-4 px-2 py-4 rounded-lg bg-BaseGray700 text-bodyM text-BaseGray200 font-nunito outline-none placeholder:text-BaseGray300'
+            placeholder='Sobrenome'
+            {...register('lastname', {
               required: "Nome obrigatório",
               minLength: 2
             })}
@@ -110,9 +123,14 @@ export function Register() {
                 minLength:{
                   value: 8,
                   message: "A senha deve ser maior que 8 caracteres."
+                },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                  message: "A senha deve conter pelo menos 8 caracteres, 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial"
                 }
               })}
-
+              onFocus={() => setToggleAviso(true)}
+              onBlur={() => setToggleAviso(false)}
             />
             {togglePassword ? <Eye
                className=' text-BaseGray300 text-titleS absolute right-4'
@@ -122,6 +140,13 @@ export function Register() {
               onClick={() => setTogglePassword(!togglePassword)}
               />
             }
+          </div>
+          <div className= {` ${toggleAviso ? "flex" : "hidden"} flex-col w-full bg-BrandRedLight rounded-lg p-2 mb-4 gap-1`}>
+            <strong className=' text-titleXS text-BaseGray200 font-nunito'>Sua senha precisa ter: </strong>
+            <span className=' text-bodyS text-BaseGray300 font-nunito'>Minimo de 8 caracteres</span>
+            <span className=' text-bodyS text-BaseGray300 font-nunito'>Minimo de 1 caractere especial '*/_@'</span>
+            <span className=' text-bodyS text-BaseGray300 font-nunito'>Minimo de 1 numemo</span>
+            <span className=' text-bodyS text-BaseGray300 font-nunito'>Letras maiusculas e minusculas</span>
           </div>
           <div className=' flex w-full mb-6 relative items-center'>
             <input
@@ -161,14 +186,14 @@ export function Register() {
                 Acessar
           </button>
         </form>
-        {/* } */}
+        }
         <footer className='flex flex-col w-full items-center'>
-          <h2 className=' text-titleXS text-BaseGray300 font-nunito mb-2'>Ainda não possui uma conta?</h2>
+          <h2 className=' text-titleXS text-BaseGray300 font-nunito mb-2'>Ja possui uma conta?</h2>
           <Link
-            to={'/register'}
+            to={'/login'}
             className=' active-outline-button border-BrandGreenDark text-BrandGreenDark w-full'
               >
-                Criar conta
+                Ir para login
           </Link>
         </footer>
       </div>

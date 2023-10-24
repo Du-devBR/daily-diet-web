@@ -88,10 +88,10 @@ export default {
           fontSize: '0.875rem',
           fontWeight: 700,
           lineHeight: '130%',
-          transition: '0.5s',
+          transition: '0.7s',
           '&:hover': {
             backgroundColor: '#1B1D1E',
-            transition: '0.5s',
+            transition: '0.7s',
           }
         },
         '.active-outline-button': {

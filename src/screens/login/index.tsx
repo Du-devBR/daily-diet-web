@@ -22,41 +22,39 @@ export function Login() {
   const dispatch = useDispatch<AppDispatch>()
   const loading = useSelector(selectLoading)
 
-  const {register, handleSubmit} = useForm<Ilogin>()
+  const {register, handleSubmit, formState:{errors}} = useForm<Ilogin>()
 
   const handlesubmitLoginUser = async (data: Ilogin) => {
 
-    try {
-      await dispatch(fetchLoginUser(data)).then((result) => {
-        if(result.payload){
-          Swal.fire({
-            icon: "success",
-            title: "Login feito com sucesso!",
-            timer: 2000,
-            showConfirmButton: false
-          }).then((resul) => {
-            if(resul.dismiss === Swal.DismissReason.timer){
-              navigate(`/`)
-            }
-          })
-        }else {
-          Swal.fire({
-            icon: "error",
-            title: "Erro ao fazer login",
-            timer: 2000,
-            showConfirmButton: false
-          })
-        }
+    if(Object.keys(errors).length === 0){
+      try {
+        await dispatch(fetchLoginUser(data)).then((result) => {
+          if(result.payload){
+            Swal.fire({
+              icon: "success",
+              title: "Login feito com sucesso!",
+              timer: 2000,
+              showConfirmButton: false
+            }).then((resul) => {
+              if(resul.dismiss === Swal.DismissReason.timer){
+                navigate(`/`)
+              }
+            })
+          }else {
+            Swal.fire({
+              icon: "error",
+              title: "Erro ao fazer login",
+              timer: 2000,
+              showConfirmButton: false
+            })
+          }
+        })
 
-
-      })
-
-    }catch(error){
-      console.error(error)
+      }catch(error){
+        console.error(error)
+      }
     }
   }
-
-
 
   return (
     <div className='flex flex-col items-center w-full h-screen bg-BrandGreenLight'>
@@ -84,18 +82,41 @@ export function Login() {
             type="text"
             className='w-full mb-4 px-2 py-4 rounded-lg bg-BaseGray700 text-bodyM text-BaseGray200 font-nunito outline-none placeholder:text-BaseGray300'
             placeholder='E-mail'
-            {...register('email')}
+            {...register('email', {
+              required: "Campo obrigatório",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Endereço de email inválido"
+              }
+            })}
           />
           <div className=' flex w-full mb-6 relative items-center'>
             <input
               type="password"
               className='w-full px-2 py-4 rounded-lg bg-BaseGray700 text-bodyM text-BaseGray200 font-nunito outline-none placeholder:text-BaseGray300'
-              placeholder='Senha'
-              {...register('password')}
+              placeholder="Senha"
+              {...register('password', {
+                required: "Campo obrigatório",
+                minLength:{
+                  value: 8,
+                  message: "A senha deve ser maior que 8 caracteres."
+                }
+              })}
             />
             <EyeSlash className=' text-BaseGray300 text-titleS absolute right-4'  />
           </div>
-          <button className=' active-solid-button bg-BrandGreenDark w-full mb-4'>Acessar</button>
+          {
+            <div className='flex flex-col self-start mb-4'>
+              <span className=' text-bodyS text-BrandRedDark font-nunito'>{errors.email && errors.email.message}</span>
+              <span className='text-bodyS text-BrandRedDark font-nunito'>{errors.password && errors.password.message}</span>
+            </div>
+          }
+          <button
+            className=' active-solid-button bg-BrandGreenDark w-full mb-4 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-BrandRedDark'
+            disabled= {Object.keys(errors).length >= 1 ? true : false}
+              >
+                Acessar
+          </button>
         </form>
         }
         <footer className='flex flex-col w-full items-center'>

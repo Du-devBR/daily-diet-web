@@ -2,6 +2,7 @@ import axios from "axios"
 import {createAsyncThunk} from '@reduxjs/toolkit'
 import { IMeal } from "../../../screens/home"
 import { getTokenUser } from "../../../util/tokenUtils"
+import { API_DAILY_DIET } from "../../../service/Api"
 
 
 export const fetchAllMeals = createAsyncThunk('meals/fetchMeals', async () => {
@@ -11,7 +12,7 @@ export const fetchAllMeals = createAsyncThunk('meals/fetchMeals', async () => {
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }
-  const response = await axios.get(`http://localhost:3333/user/${userId}/meal`, {headers: option})
+  const response = await axios.get(`${API_DAILY_DIET}/user/${userId}/meal`, {headers: option})
   return (await response.data.meals as IMeal[])
 })
 
@@ -21,7 +22,7 @@ export const fetchMealById = createAsyncThunk('meals/fetchMealById', async(id: s
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }
-  const response = await axios.get(`http://localhost:3333/user/${userId}/meal/${id}`, {headers: option})
+  const response = await axios.get(`${API_DAILY_DIET}/user/${userId}/meal/${id}`, {headers: option})
   return await response.data.meal as IMeal[]
 })
 
@@ -31,7 +32,7 @@ export const createNewMeal = createAsyncThunk('meals/createNewMeal', async(meal:
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }
-  const response = await axios.post(`http://localhost:3333/user/${userId}/meal`, meal, {headers: option})
+  const response = await axios.post(`${API_DAILY_DIET}/user/${userId}/meal`, meal, {headers: option})
   return  response.status
 })
 
@@ -41,7 +42,7 @@ export const updateMeal = createAsyncThunk('meals/updateMeal', async({id, meal}:
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }
-  const response = await axios.put(`http://localhost:3333/user/${userId}/meal/${id}`, meal, {headers: option})
+  const response = await axios.put(`${API_DAILY_DIET}/user/${userId}/meal/${id}`, meal, {headers: option})
   return response.status
 
 })
@@ -52,7 +53,7 @@ export const deleteMeal = createAsyncThunk('meals/deleteMeal', async(id: string)
   const option = {
     Authorization: `Bearer ${localStorageToken}`
   }
-  const response = await axios.delete(`http://localhost:3333/user/${userId}/meal/${id}`, {headers: option})
+  const response = await axios.delete(`${API_DAILY_DIET}/user/${userId}/meal/${id}`, {headers: option})
 
   return  response.status
 })

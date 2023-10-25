@@ -53,8 +53,6 @@ export function Register() {
             })
           }
         })
-        console.log(data);
-
       }catch(error){
         console.error(error)
       }

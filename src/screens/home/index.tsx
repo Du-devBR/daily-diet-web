@@ -39,7 +39,13 @@ export function Home() {
   },[dispatch])
 
   if(error) {
-    navigate("/notFound")
+    const token = localStorage.getItem("token")
+    if(token){
+      navigate("/notFound")
+    }else{
+      navigate("/login")
+    }
+
   }
 
   const groupCreatedat = groupMealsByDate(meals)

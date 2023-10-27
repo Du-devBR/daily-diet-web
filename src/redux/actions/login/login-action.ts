@@ -6,7 +6,7 @@ import { API_DAILY_DIET } from "../../../service/Api";
 
 
 export const fetchLoginUser = createAsyncThunk('login/fetchLoginUser', async (login: Ilogin) => {
-  const response = await axios.post(`${API_DAILY_DIET}/user/login`, login)
+  const response = await axios.post(`${API_DAILY_DIET}/login`, login)
 
   return await response.data
 })

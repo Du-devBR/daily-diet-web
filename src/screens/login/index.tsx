@@ -43,7 +43,7 @@ export function Login() {
           }else {
             Swal.fire({
               icon: "error",
-              title: "Erro ao fazer login",
+              title: "Senha ou email incorreto",
               timer: 2000,
               showConfirmButton: false
             })
@@ -117,6 +117,7 @@ export function Login() {
               >
                 Acessar
           </button>
+          <Link to={"/redefinePassword"} className=' text-bodyM text-BaseGray200 font-nunito mt-2'>Esqueceu sua senha?</Link>
         </form>
         }
         <footer className='flex flex-col w-full items-center'>

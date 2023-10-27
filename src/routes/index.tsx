@@ -8,6 +8,8 @@ import { MealDetail } from "../screens/mealDetail";
 import { NotFound } from "../screens/404/notFound";
 import { CreateMeal } from "../screens/createMeal";
 import { Register } from "../screens/register";
+import { SendEmail } from "../screens/regenerateNewPassword/sendEmail";
+import { ResetPassword } from "../screens/regenerateNewPassword/resetPassword";
 
 
 export function Router(){
@@ -22,6 +24,8 @@ export function Router(){
       <Route path="/feedback/:status" element={<Feedback />}/>
       <Route path="/meal/:id" element={<MealDetail />} />
       <Route path="/notFound" element={<NotFound />} />
+      <Route path="/redefinePassword" element={<SendEmail />}/>
+      <Route path="/resetPassword" element={<ResetPassword />}/>
     </Routes>
   )
 }

@@ -47,7 +47,8 @@ export function Register() {
           }else {
             Swal.fire({
               icon: "error",
-              title: "Erro ao cadastrar usuario",
+              title: "Email ja cadastrado",
+              text: "Caso não lembre a senha, clique em esqueci a senha na pagina de login!",
               timer: 2000,
               showConfirmButton: false
             })
@@ -181,7 +182,7 @@ export function Register() {
             className=' active-solid-button bg-BrandGreenDark w-full mb-4 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-BrandRedDark'
             disabled= {Object.keys(errors).length >= 1 ? true : false}
               >
-                Acessar
+                Registrar
           </button>
         </form>
         }

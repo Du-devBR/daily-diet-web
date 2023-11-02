@@ -1,4 +1,4 @@
-import { EyeSlash } from "phosphor-react";
+import { Eye, EyeSlash } from "phosphor-react";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import { AppDispatch } from "../../redux/store";
 import { fetchLoginUser } from "../../redux/actions/login/login-action";
 import Swal from "sweetalert2";
 import { TailSpin } from "react-loader-spinner";
+import { useState } from "react";
 
 export interface Ilogin {
   email: string;
@@ -18,6 +19,7 @@ export function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const loading = useSelector(selectLoading);
+  const [togglePassword, setTogglePassword] = useState(false);
 
   const {
     register,
@@ -100,7 +102,7 @@ export function Login() {
             />
             <div className=" flex w-full mb-6 relative items-center">
               <input
-                type="password"
+                type={togglePassword ? "text" : "password"}
                 className="w-full px-2 py-4 rounded-lg bg-BaseGray700 text-bodyM text-BaseGray200 font-nunito outline-none placeholder:text-BaseGray300"
                 placeholder="Senha"
                 {...register("password", {
@@ -111,7 +113,17 @@ export function Login() {
                   },
                 })}
               />
-              <EyeSlash className=" text-BaseGray300 text-titleS absolute right-4" />
+              {togglePassword ? (
+                <Eye
+                  className=" text-BaseGray300 text-titleS absolute right-4 cursor-pointer"
+                  onClick={() => setTogglePassword(!togglePassword)}
+                />
+              ) : (
+                <EyeSlash
+                  className=" text-BaseGray300 text-titleS absolute right-4 cursor-pointer"
+                  onClick={() => setTogglePassword(!togglePassword)}
+                />
+              )}
             </div>
             {
               <div className="flex flex-col self-start mb-4">

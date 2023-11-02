@@ -1,15 +1,30 @@
 import { ArrowLeft } from "phosphor-react";
 import logo from "../../../assets/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTokenForResetPassword } from "../../../redux/actions/regenerateNewPassword/resetPassword-action";
 import { AppDispatch } from "../../../redux/store";
 import { selectLoading } from "../../../redux/reducer/regenerateNewPassword/resetPassword-reducer";
 import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
+
+interface Ipassword {
+  password: string;
+  confirmePassword: string;
+}
 
 export function ResetPassword() {
   const dispatch = useDispatch<AppDispatch>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm<Ipassword>();
+
+  const [toggleAviso, setToggleAviso] = useState(false);
+
   const loading = useSelector(selectLoading);
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,6 +56,10 @@ export function ResetPassword() {
     }
   }, [dispatch, location.search, navigate]);
 
+  const handleSubmitNewPassword = async (data: Ipassword) => {
+    console.log(data);
+  };
+
   if (loading) {
     return <div>loading</div>;
   }
@@ -60,6 +79,7 @@ export function ResetPassword() {
         </header>
         <form
           action=""
+          onSubmit={handleSubmit(handleSubmitNewPassword)}
           className=" w-full rounded-3xl bg-BaseGray700 p-10 calc-main-height "
         >
           <h1 className=" text-titleM text-BaseGray100 font-nunito text-center mb-8 ">
@@ -83,8 +103,44 @@ export function ResetPassword() {
             <input
               className="w-full mb-4 px-2 py-4 rounded-lg bg-BaseGray500 text-bodyM text-BaseGray200 font-nunito outline-none placeholder:text-BaseGray300"
               type="password"
-              placeholder="exemplo@email.com"
+              placeholder="********"
+              {...register("password", {
+                required: "Senha obrigatorio",
+                minLength: {
+                  value: 8,
+                  message: "A senha deve ser maior que 8 caracteres.",
+                },
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                  message:
+                    "A senha deve conter pelo menos 8 caracteres, 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial",
+                },
+              })}
+              onFocus={() => setToggleAviso(true)}
+              onBlur={() => setToggleAviso(false)}
             />
+            <div
+              className={` ${
+                toggleAviso ? "flex" : "hidden"
+              } flex-col w-full bg-BrandRedLight rounded-lg p-2 mb-4 gap-1`}
+            >
+              <strong className=" text-titleXS text-BaseGray200 font-nunito">
+                Sua senha precisa ter:{" "}
+              </strong>
+              <span className=" text-bodyS text-BaseGray300 font-nunito">
+                Minimo de 8 caracteres
+              </span>
+              <span className=" text-bodyS text-BaseGray300 font-nunito">
+                Minimo de 1 caractere especial '*/_@'
+              </span>
+              <span className=" text-bodyS text-BaseGray300 font-nunito">
+                Minimo de 1 numemo
+              </span>
+              <span className=" text-bodyS text-BaseGray300 font-nunito">
+                Letras maiusculas e minusculas
+              </span>
+            </div>
           </div>
           <div className="flex flex-col gap-2 w-full">
             <label
@@ -96,9 +152,29 @@ export function ResetPassword() {
             <input
               className="w-full mb-4 px-2 py-4 rounded-lg bg-BaseGray500 text-bodyM text-BaseGray200 font-nunito outline-none placeholder:text-BaseGray300"
               type="password"
-              placeholder="exemplo@email.com"
+              placeholder="********"
+              {...register("confirmePassword", {
+                required: "Confirme sua senha obrigatorio!",
+                minLength: {
+                  value: 8,
+                  message: "Senha pdeve ser igual a digitada",
+                },
+                validate: (value) =>
+                  value === getValues("password") ||
+                  "Senha diferente da digitada",
+              })}
             />
           </div>
+          {
+            <div className="flex flex-col self-start mb-4">
+              <span className=" text-bodyS text-BrandRedDark font-nunito">
+                {errors.password && errors.password.message}
+              </span>
+              <span className=" text-bodyS text-BrandRedDark font-nunito">
+                {errors.confirmePassword && errors.confirmePassword.message}
+              </span>
+            </div>
+          }
           <button className=" active-solid-button w-full mt-8">Enviar</button>
         </form>
       </div>

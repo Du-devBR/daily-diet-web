@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../../store"
-import { fetchTokenForResetPassword } from "../../actions/regenerateNewPassword/resetPassword-action"
+import { createNewPassword, fetchTokenForResetPassword } from "../../actions/regenerateNewPassword/resetPassword-action"
 
 interface IResetPasswordState {
   status: number | null,
@@ -30,6 +30,19 @@ const resetPasswordSlice = createSlice({
 
     })
     .addCase(fetchTokenForResetPassword.rejected, (state, action) => {
+      state.loading = false,
+      state.error = action.error.message || ""
+    })
+    .addCase(createNewPassword.pending, (state) => {
+      state.loading = true,
+      state.error = null
+    })
+    .addCase(createNewPassword.fulfilled, (state, action) => {
+      state.loading = false,
+      state.status = action.payload
+
+    })
+    .addCase(createNewPassword.rejected, (state, action) => {
       state.loading = false,
       state.error = action.error.message || ""
     })

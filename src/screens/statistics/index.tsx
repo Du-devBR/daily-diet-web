@@ -33,7 +33,12 @@ export function Statistics() {
   }, [dispatch]);
 
   if (error) {
-    navigate("/notfound");
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/notFound");
+    } else {
+      navigate("/login");
+    }
   }
 
   return (

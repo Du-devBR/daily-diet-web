@@ -11,7 +11,9 @@ import { AppDispatch } from "../../../redux/store";
 import { selectLoading } from "../../../redux/reducer/regenerateNewPassword/resetPassword-reducer";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
-import { TailSpin } from "react-loader-spinner";
+import { Error } from "../../../components/error/inputErrors";
+import { PasswordPattern } from "../../../components/error/passwordPattern";
+import { Loading } from "../../../components/loading";
 
 export interface Ipassword {
   password: string;
@@ -27,7 +29,7 @@ export function ResetPassword() {
     getValues,
   } = useForm<Ipassword>();
 
-  const [toggleAviso, setToggleAviso] = useState(false);
+  const [togglePasswordPattern, setTogglePasswordPattern] = useState(false);
 
   const loading = useSelector(selectLoading);
   const navigate = useNavigate();
@@ -79,10 +81,22 @@ export function ResetPassword() {
                 navigate("/login");
               }
             });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Erro ao atualizar senha, por favor tente novamente!",
+              timer: 2000,
+              showConfirmButton: false,
+            });
           }
         });
       } catch (error) {
-        console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Erro ao atualizar senha, por favor tente novamente!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
       }
     }
   };
@@ -97,17 +111,8 @@ export function ResetPassword() {
           <img className=" self-center" src={logo} alt="" />
         </header>
         {loading ? (
-          <div className=" flex justify-center items-center">
-            <TailSpin
-              height="80"
-              width="80"
-              color="#4fa94d"
-              ariaLabel="tail-spin-loading"
-              radius="1"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
-            />
+          <div className="m-auto">
+            <Loading />
           </div>
         ) : (
           <form
@@ -150,30 +155,10 @@ export function ResetPassword() {
                       "A senha deve conter pelo menos 8 caracteres, 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial",
                   },
                 })}
-                onFocus={() => setToggleAviso(true)}
-                onBlur={() => setToggleAviso(false)}
+                onFocus={() => setTogglePasswordPattern(true)}
+                onBlur={() => setTogglePasswordPattern(false)}
               />
-              <div
-                className={` ${
-                  toggleAviso ? "flex" : "hidden"
-                } flex-col w-full bg-BrandRedLight rounded-lg p-2 mb-4 gap-1`}
-              >
-                <strong className=" text-titleXS text-BaseGray200 font-nunito">
-                  Sua senha precisa ter:{" "}
-                </strong>
-                <span className=" text-bodyS text-BaseGray300 font-nunito">
-                  Minimo de 8 caracteres
-                </span>
-                <span className=" text-bodyS text-BaseGray300 font-nunito">
-                  Minimo de 1 caractere especial '*/_@'
-                </span>
-                <span className=" text-bodyS text-BaseGray300 font-nunito">
-                  Minimo de 1 numemo
-                </span>
-                <span className=" text-bodyS text-BaseGray300 font-nunito">
-                  Letras maiusculas e minusculas
-                </span>
-              </div>
+              <PasswordPattern togglePasswordPattern={togglePasswordPattern} />
             </div>
             <div className="flex flex-col gap-2 w-full">
               <label
@@ -198,16 +183,7 @@ export function ResetPassword() {
                 })}
               />
             </div>
-            {
-              <div className="flex flex-col self-start mb-4">
-                <span className=" text-bodyS text-BrandRedDark font-nunito">
-                  {errors.password && errors.password.message}
-                </span>
-                <span className=" text-bodyS text-BrandRedDark font-nunito">
-                  {errors.confirmePassword && errors.confirmePassword.message}
-                </span>
-              </div>
-            }
+            {<Error errors={errors} />}
             <button className=" active-solid-button w-full mt-8">Enviar</button>
           </form>
         )}

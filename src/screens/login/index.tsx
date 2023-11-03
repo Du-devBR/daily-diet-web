@@ -7,8 +7,9 @@ import { selectLoading } from "../../redux/reducer/login/login-reducer";
 import { AppDispatch } from "../../redux/store";
 import { fetchLoginUser } from "../../redux/actions/login/login-action";
 import Swal from "sweetalert2";
-import { TailSpin } from "react-loader-spinner";
 import { useState } from "react";
+import { Error } from "../../components/error/inputErrors";
+import { Loading } from "../../components/loading";
 
 export interface Ilogin {
   email: string;
@@ -67,18 +68,7 @@ export function Login() {
           </p>
         </header>
         {loading ? (
-          <div className=" flex justify-center items-center">
-            <TailSpin
-              height="80"
-              width="80"
-              color="#4fa94d"
-              ariaLabel="tail-spin-loading"
-              radius="1"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
-            />
-          </div>
+          <Loading />
         ) : (
           <form
             onSubmit={handleSubmit(handlesubmitLoginUser)}
@@ -125,16 +115,7 @@ export function Login() {
                 />
               )}
             </div>
-            {
-              <div className="flex flex-col self-start mb-4">
-                <span className=" text-bodyS text-BrandRedDark font-nunito">
-                  {errors.email && errors.email.message}
-                </span>
-                <span className="text-bodyS text-BrandRedDark font-nunito">
-                  {errors.password && errors.password.message}
-                </span>
-              </div>
-            }
+            {<Error errors={errors} />}
             <button
               className=" active-solid-button bg-BrandGreenDark w-full mb-4 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-BrandRedDark"
               disabled={Object.keys(errors).length >= 1 ? true : false}

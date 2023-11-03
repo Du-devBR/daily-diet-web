@@ -7,7 +7,8 @@ import { AppDispatch } from "../../../redux/store";
 import { fetchSendEmail } from "../../../redux/actions/regenerateNewPassword/sendEmail-action";
 import { selectLoading } from "../../../redux/reducer/regenerateNewPassword/sendEmail-reducer";
 import Swal from "sweetalert2";
-import { TailSpin } from "react-loader-spinner";
+import { Error } from "../../../components/error/inputErrors";
+import { Loading } from "../../../components/loading";
 
 export interface IEmail {
   email: string;
@@ -62,17 +63,8 @@ export function SendEmail() {
           <img className=" self-center" src={logo} alt="" />
         </header>
         {loading ? (
-          <div className=" flex justify-center items-center m-auto">
-            <TailSpin
-              height="80"
-              width="80"
-              color="#4fa94d"
-              ariaLabel="tail-spin-loading"
-              radius="1"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
-            />
+          <div className=" m-auto">
+            <Loading />
           </div>
         ) : (
           <form
@@ -109,13 +101,7 @@ export function SendEmail() {
                   },
                 })}
               />
-              {
-                <div className="flex flex-col self-start mb-4">
-                  <span className=" text-bodyS text-BrandRedDark font-nunito">
-                    {errors.email && errors.email.message}
-                  </span>
-                </div>
-              }
+              {<Error errors={errors} />}
             </div>
             <button className=" active-solid-button w-full mt-8">Enviar</button>
           </form>

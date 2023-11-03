@@ -8,7 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { fetchRegisterUser } from "../../redux/actions/register/register-action";
 import { selectLoading } from "../../redux/reducer/register/regiter-reducer";
-import { TailSpin } from "react-loader-spinner";
+import { Error } from "../../components/error/inputErrors";
+import { PasswordPattern } from "../../components/error/passwordPattern";
+import { Loading } from "../../components/loading";
 
 export interface IRegister {
   name: string;
@@ -30,7 +32,7 @@ export function Register() {
     formState: { errors },
   } = useForm<IRegister>();
   const [togglePassword, setTogglePassword] = useState(false);
-  const [toggleAviso, setToggleAviso] = useState(false);
+  const [togglePasswordPattern, setTogglePasswordPattern] = useState(false);
 
   const handleSubmitRegisterUser = async (data: IRegister) => {
     if (Object.keys(errors).length === 0) {
@@ -73,18 +75,7 @@ export function Register() {
           </p>
         </header>
         {loading ? (
-          <div className=" flex justify-center items-center">
-            <TailSpin
-              height="80"
-              width="80"
-              color="#4fa94d"
-              ariaLabel="tail-spin-loading"
-              radius="1"
-              wrapperStyle={{}}
-              wrapperClass=""
-              visible={true}
-            />
-          </div>
+          <Loading />
         ) : (
           <form
             onSubmit={handleSubmit(handleSubmitRegisterUser)}
@@ -108,7 +99,7 @@ export function Register() {
               className="w-full mb-4 px-2 py-4 rounded-lg bg-BaseGray700 text-bodyM text-BaseGray200 font-nunito outline-none placeholder:text-BaseGray300"
               placeholder="Sobrenome"
               {...register("lastname", {
-                required: "Nome obrigatório",
+                required: "Sobrenome obrigatório",
                 minLength: 2,
               })}
             />
@@ -142,8 +133,8 @@ export function Register() {
                       "A senha deve conter pelo menos 8 caracteres, 1 maiúscula, 1 minúscula, 1 número e 1 caractere especial",
                   },
                 })}
-                onFocus={() => setToggleAviso(true)}
-                onBlur={() => setToggleAviso(false)}
+                onFocus={() => setTogglePasswordPattern(true)}
+                onBlur={() => setTogglePasswordPattern(false)}
               />
               {togglePassword ? (
                 <Eye
@@ -157,27 +148,7 @@ export function Register() {
                 />
               )}
             </div>
-            <div
-              className={` ${
-                toggleAviso ? "flex" : "hidden"
-              } flex-col w-full bg-BrandRedLight rounded-lg p-2 mb-4 gap-1`}
-            >
-              <strong className=" text-titleXS text-BaseGray200 font-nunito">
-                Sua senha precisa ter:{" "}
-              </strong>
-              <span className=" text-bodyS text-BaseGray300 font-nunito">
-                Minimo de 8 caracteres
-              </span>
-              <span className=" text-bodyS text-BaseGray300 font-nunito">
-                Minimo de 1 caractere especial '*/_@'
-              </span>
-              <span className=" text-bodyS text-BaseGray300 font-nunito">
-                Minimo de 1 numemo
-              </span>
-              <span className=" text-bodyS text-BaseGray300 font-nunito">
-                Letras maiusculas e minusculas
-              </span>
-            </div>
+            <PasswordPattern togglePasswordPattern={togglePasswordPattern} />
             <div className=" flex w-full mb-6 relative items-center">
               <input
                 type={togglePassword ? "text" : "password"}
@@ -206,22 +177,7 @@ export function Register() {
                 />
               )}
             </div>
-            {
-              <div className="flex flex-col self-start mb-4">
-                <span className=" text-bodyS text-BrandRedDark font-nunito">
-                  {errors.name && errors.name.message}
-                </span>
-                <span className="text-bodyS text-BrandRedDark font-nunito">
-                  {errors.email && errors.email.message}
-                </span>
-                <span className=" text-bodyS text-BrandRedDark font-nunito">
-                  {errors.password && errors.password.message}
-                </span>
-                <span className="text-bodyS text-BrandRedDark font-nunito">
-                  {errors.confirmPassword && errors.confirmPassword.message}
-                </span>
-              </div>
-            }
+            {<Error errors={errors} />}
             <button
               className=" active-solid-button bg-BrandGreenDark w-full mb-4 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-BrandRedDark"
               disabled={Object.keys(errors).length >= 1 ? true : false}

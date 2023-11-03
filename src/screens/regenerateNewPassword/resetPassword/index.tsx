@@ -89,8 +89,8 @@ export function ResetPassword() {
 
   return (
     <div className=" bg-BrandGreenLight min-h-screen flex flex-col">
-      <div className="w-full flex flex-col self-center justify-between mb-8 px-6 py-0 md:max-w-2xl">
-        <header className="flex flex-col w-full gap-6 px-6 pt-6 mb-5">
+      <div className="w-full min-h-screen flex flex-col self-center md:max-w-2xl">
+        <header className="flex flex-col w-full gap-6 p-6">
           <Link to={"/login"}>
             <ArrowLeft className=" w-6 h-6" />
           </Link>
@@ -113,7 +113,7 @@ export function ResetPassword() {
           <form
             action=""
             onSubmit={handleSubmit(handleSubmitNewPassword)}
-            className=" w-full rounded-3xl bg-BaseGray700 p-10 calc-main-height "
+            className=" w-full rounded-3xl bg-BaseGray700 py-16 px-10"
           >
             <h1 className=" text-titleM text-BaseGray100 font-nunito text-center mb-8 ">
               Redefinir senha

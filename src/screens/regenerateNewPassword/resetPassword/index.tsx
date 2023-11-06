@@ -44,7 +44,6 @@ export function ResetPassword() {
         dispatch(fetchTokenForResetPassword(token)).then((result) => {
           if (result.payload) {
             localStorage.setItem("reset", token);
-            console.log("ok");
           } else {
             localStorage.removeItem("reset");
             Swal.fire({
@@ -61,7 +60,7 @@ export function ResetPassword() {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [dispatch, location.search, navigate]);
 

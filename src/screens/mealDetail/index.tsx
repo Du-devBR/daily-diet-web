@@ -41,7 +41,7 @@ export function MealDetail() {
           if (status === 200) {
             Swal.fire({
               icon: "success",
-              title: "Refeição execluida",
+              title: "Refeição excluida",
               timer: 2000,
               showConfirmButton: false,
             }).then((result) => {

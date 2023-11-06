@@ -55,7 +55,13 @@ export function Home() {
   return (
     <div className="px-6 pb-6 md:max-w-5xl m-auto">
       <Hearder />
-      <nav className="flex justify-between w-full bg-BrandGreenLight p-5 rounded-lg mt-9">
+      <nav
+        className={`flex justify-between w-full p-5 rounded-lg mt-9 ${
+          metrics.percentMealsWithinDiet >= 50
+            ? "bg-BrandGreenLight"
+            : "bg-BrandRedLight"
+        }`}
+      >
         <div className="flex flex-col items-center m-auto">
           <strong className=" font-nunito text-BaseGray100 text-titleG">{`${metrics.percentMealsWithinDiet} %`}</strong>
           <span className=" font-nunito text-BaseGray200 text-bodyS">

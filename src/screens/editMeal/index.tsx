@@ -15,6 +15,7 @@ import {
   updateMeal,
 } from "../../redux/actions/meals/meals-actions";
 import Swal from "sweetalert2";
+import { Loading } from "../../components/loading";
 interface IMeal {
   id: string;
   name: string;
@@ -126,12 +127,8 @@ export function EditMeal() {
     }
   };
 
-  if (loading) {
-    return <div>....loadixng</div>;
-  }
-
   if (error) {
-    return <div>Erro: {error}</div>;
+    navigate("/");
   }
 
   return (
@@ -148,126 +145,137 @@ export function EditMeal() {
         onSubmit={handleSubmit(handleRegisterNewMeal)}
         className=" flex flex-col gap-6 w-full calc-manege-height px-6 py-10 bg-BaseGray700 rounded-t-3xl"
       >
-        <div className="flex flex-col gap-1 w-full">
-          <label
-            className=" text-titleXS text-BaseGray200 font-nunito"
-            htmlFor=""
-          >
-            Nome
-          </label>
-          <input
-            className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${
-              errors.name ? " bg-BrandRedLight border-BrandRedDark" : ""
-            }`}
-            type="text"
-            placeholder={errors.name ? errors.name.message : "Refeição"}
-            {...register("name", {
-              required: "Nome deve ser maior que 2 letras",
-              minLength: 2,
-            })}
-          />
-        </div>
-        <div className="flex flex-col gap-1 w-full">
-          <label
-            className=" text-titleXS text-BaseGray200 font-nunito"
-            htmlFor=""
-          >
-            Descrição
-          </label>
-          <textarea
-            className={`w-full p-3.5 h-28 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${
-              errors.description ? " bg-BrandRedLight border-BrandRedDark" : ""
-            }`}
-            placeholder={
-              errors.description
-                ? errors.description.message
-                : "Descreva sua refeição"
-            }
-            {...register("description", {
-              required: "Preencha uma descrição",
-              minLength: 1,
-            })}
-          />
-        </div>
-        <div className="flex gap-6">
-          <div className="flex flex-col gap-1 w-full">
-            <label
-              className=" text-titleXS text-BaseGray200 font-nunito"
-              htmlFor=""
-            >
-              Data
-            </label>
-            <input
-              className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${
-                errors.data ? " bg-BrandRedLight border-BrandRedDark" : ""
-              }`}
-              type="date"
-              placeholder={errors.data && errors.data.message}
-              {...register("data", { required: "Data invalida" })}
-            />
+        {loading ? (
+          <div className="m-auto">
+            <Loading />
           </div>
-          <div className="flex flex-col gap-1 w-full">
-            <label
-              className=" text-titleXS text-BaseGray200 font-nunito"
-              htmlFor=""
-            >
-              Hora
-            </label>
-            <input
-              className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${
-                errors.hour ? " bg-BrandRedLight border-BrandRedDark" : ""
-              }`}
-              type="time"
-              placeholder={errors.hour && errors.hour.message}
-              {...register("hour", { required: "Hora invalida" })}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col">
-          <label
-            className=" text-BaseGray200 text-titleXS font-nunito"
-            htmlFor=""
-          >
-            Esta dentro da dieta?
-          </label>
-          <div className="flex gap-6 w-full mt-2">
+        ) : (
+          <>
+            <div className="flex flex-col gap-1 w-full">
+              <label
+                className=" text-titleXS text-BaseGray200 font-nunito"
+                htmlFor=""
+              >
+                Nome
+              </label>
+              <input
+                className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${
+                  errors.name ? " bg-BrandRedLight border-BrandRedDark" : ""
+                }`}
+                type="text"
+                placeholder={errors.name ? errors.name.message : "Refeição"}
+                {...register("name", {
+                  required: "Nome deve ser maior que 2 letras",
+                  minLength: 2,
+                })}
+              />
+            </div>
+            <div className="flex flex-col gap-1 w-full">
+              <label
+                className=" text-titleXS text-BaseGray200 font-nunito"
+                htmlFor=""
+              >
+                Descrição
+              </label>
+              <textarea
+                className={`w-full p-3.5 h-28 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${
+                  errors.description
+                    ? " bg-BrandRedLight border-BrandRedDark"
+                    : ""
+                }`}
+                placeholder={
+                  errors.description
+                    ? errors.description.message
+                    : "Descreva sua refeição"
+                }
+                {...register("description", {
+                  required: "Preencha uma descrição",
+                  minLength: 1,
+                })}
+              />
+            </div>
+            <div className="flex gap-6">
+              <div className="flex flex-col gap-1 w-full">
+                <label
+                  className=" text-titleXS text-BaseGray200 font-nunito"
+                  htmlFor=""
+                >
+                  Data
+                </label>
+                <input
+                  className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${
+                    errors.data ? " bg-BrandRedLight border-BrandRedDark" : ""
+                  }`}
+                  type="date"
+                  placeholder={errors.data && errors.data.message}
+                  {...register("data", { required: "Data invalida" })}
+                />
+              </div>
+              <div className="flex flex-col gap-1 w-full">
+                <label
+                  className=" text-titleXS text-BaseGray200 font-nunito"
+                  htmlFor=""
+                >
+                  Hora
+                </label>
+                <input
+                  className={`w-full p-3.5 border border-BaseGray500 rounded-md text-bodyM text-BaseGray100 font-nunito outline-none ${
+                    errors.hour ? " bg-BrandRedLight border-BrandRedDark" : ""
+                  }`}
+                  type="time"
+                  placeholder={errors.hour && errors.hour.message}
+                  {...register("hour", { required: "Hora invalida" })}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <label
+                className=" text-BaseGray200 text-titleXS font-nunito"
+                htmlFor=""
+              >
+                Esta dentro da dieta?
+              </label>
+              <div className="flex gap-6 w-full mt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDiet(true), clearErrors("isDiet");
+                  }}
+                  className={`mt-auto w-full button-select-green ${
+                    isDiet === true ? "active" : ""
+                  } ${errors.isDiet ? "animate-pulse bg-BrandGreenLight" : ""}`}
+                >
+                  <div className=" w-2 h-2 rounded-full bg-BrandGreenDark"></div>
+                  Sim
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsDiet(false), clearErrors("isDiet");
+                  }}
+                  className={`mt-auto w-full button-select-red ${
+                    isDiet === false ? "active" : ""
+                  } ${errors.isDiet ? "animate-pulse bg-BrandRedLight" : ""}`}
+                >
+                  <div className=" w-2 h-2 rounded-full bg-BrandRedDark disabled:bg-red-500"></div>
+                  Não
+                </button>
+              </div>
+              {errors.isDiet && (
+                <p className=" text-bodyS text-BrandRedDark font-nunito mt-4">
+                  {errors.isDiet.message}
+                </p>
+              )}
+            </div>
             <button
-              type="button"
-              onClick={() => {
-                setIsDiet(true), clearErrors("isDiet");
-              }}
-              className={`mt-auto w-full button-select-green ${
-                isDiet === true ? "active" : ""
-              } ${errors.isDiet ? "animate-pulse bg-BrandGreenLight" : ""}`}
+              onClick={() => checkStateIsDiet()}
+              type="submit"
+              className="active-solid-button mt-auto w-full"
             >
-              <div className=" w-2 h-2 rounded-full bg-BrandGreenDark"></div>Sim
+              Salvar alterações
             </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIsDiet(false), clearErrors("isDiet");
-              }}
-              className={`mt-auto w-full button-select-red ${
-                isDiet === false ? "active" : ""
-              } ${errors.isDiet ? "animate-pulse bg-BrandRedLight" : ""}`}
-            >
-              <div className=" w-2 h-2 rounded-full bg-BrandRedDark disabled:bg-red-500"></div>
-              Não
-            </button>
-          </div>
-          {errors.isDiet && (
-            <p className=" text-bodyS text-BrandRedDark font-nunito mt-4">
-              {errors.isDiet.message}
-            </p>
-          )}
-        </div>
-        <button
-          onClick={() => checkStateIsDiet()}
-          type="submit"
-          className="active-solid-button mt-auto w-full"
-        >
-          Salvar alterações
-        </button>
+          </>
+        )}
       </form>
     </div>
   );

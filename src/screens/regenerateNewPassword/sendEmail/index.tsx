@@ -35,7 +35,7 @@ export function SendEmail() {
               showConfirmButton: false,
             }).then((resul) => {
               if (resul.dismiss === Swal.DismissReason.timer) {
-                navigate(`/`);
+                navigate(`/home`);
               }
             });
           } else {

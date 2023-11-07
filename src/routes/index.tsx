@@ -11,21 +11,20 @@ import { Register } from "../screens/register";
 import { SendEmail } from "../screens/regenerateNewPassword/sendEmail";
 import { ResetPassword } from "../screens/regenerateNewPassword/resetPassword";
 
-
-export function Router(){
-  return(
+export function Router() {
+  return (
     <Routes>
-      <Route path="/" element={<Home />}/>
-      <Route path="/login" element={<Login />}/>
-      <Route path="/register" element={<Register />}/>
-      <Route path="/statistics" element={<Statistics />}/>
-      <Route path="/create" element={<CreateMeal />}/>
-      <Route path="/edit/:id" element={<EditMeal />}/>
-      <Route path="/feedback/:status" element={<Feedback />}/>
+      <Route path="/login" element={<Login />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/statistics" element={<Statistics />} />
+      <Route path="/create" element={<CreateMeal />} />
+      <Route path="/edit/:id" element={<EditMeal />} />
+      <Route path="/feedback/:status" element={<Feedback />} />
       <Route path="/meal/:id" element={<MealDetail />} />
       <Route path="/notFound" element={<NotFound />} />
-      <Route path="/redefinePassword" element={<SendEmail />}/>
-      <Route path="/resetPassword" element={<ResetPassword />}/>
+      <Route path="/redefinePassword" element={<SendEmail />} />
+      <Route path="/resetPassword" element={<ResetPassword />} />
     </Routes>
-  )
+  );
 }

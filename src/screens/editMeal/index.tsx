@@ -128,7 +128,7 @@ export function EditMeal() {
   };
 
   if (error) {
-    navigate("/");
+    navigate("/home");
   }
 
   return (

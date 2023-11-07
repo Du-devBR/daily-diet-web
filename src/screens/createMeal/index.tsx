@@ -80,7 +80,7 @@ export function CreateMeal() {
                 showConfirmButton: false,
               }).then((resul) => {
                 if (resul.dismiss === Swal.DismissReason.timer) {
-                  navigate("/");
+                  navigate("/home");
                 }
               });
             }
@@ -98,13 +98,13 @@ export function CreateMeal() {
   };
 
   if (error) {
-    navigate("/");
+    navigate("/home");
   }
 
   return (
     <div className=" bg-BaseGray500 md:max-w-5xl m-auto">
       <header className="flex items-start w-full text-center p-6">
-        <Link to={"/"}>
+        <Link to={"/home"}>
           <ArrowLeft className=" w-6 h-6" />
         </Link>
         <h1 className=" text-titleS text-BaseGray100 font-nunito m-auto">

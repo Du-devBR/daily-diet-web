@@ -50,7 +50,7 @@ export function Statistics() {
       } md:max-w-5xl m-auto`}
     >
       <header className=" p-6 ">
-        <Link to={"/"} className=" bg-none border-none self-start">
+        <Link to={"/home"} className=" bg-none border-none self-start">
           <ArrowLeft className=" text-BrandGreenDark w-6 h-6" />
         </Link>
         {loading ? (

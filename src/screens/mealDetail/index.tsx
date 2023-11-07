@@ -46,7 +46,7 @@ export function MealDetail() {
               showConfirmButton: false,
             }).then((result) => {
               if (result.dismiss === Swal.DismissReason.timer) {
-                navigate("/");
+                navigate("/home");
               }
             });
           } else {
@@ -71,7 +71,7 @@ export function MealDetail() {
   return (
     <div className=" bg-BaseGray500 w-full min-h-screen flex flex-col justify-center items-center md:max-w-5xl m-auto">
       <header className="flex items-start w-full text-center p-6">
-        <Link to={"/"}>
+        <Link to={"/home"}>
           <ArrowLeft className=" w-6 h-6" />
         </Link>
         <h1 className=" text-titleS text-BaseGray100 font-nunito m-auto">

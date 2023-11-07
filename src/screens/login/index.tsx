@@ -40,7 +40,7 @@ export function Login() {
               showConfirmButton: false,
             }).then((resul) => {
               if (resul.dismiss === Swal.DismissReason.timer) {
-                navigate(`/`);
+                navigate(`/home`);
               }
             });
           } else {

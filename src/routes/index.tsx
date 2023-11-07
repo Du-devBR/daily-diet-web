@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Home } from "../screens/home";
 import { Login } from "../screens/login";
 import { Statistics } from "../screens/statistics";
@@ -14,6 +14,7 @@ import { ResetPassword } from "../screens/regenerateNewPassword/resetPassword";
 export function Router() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to={"home"} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
       <Route path="/register" element={<Register />} />

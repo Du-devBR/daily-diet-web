@@ -3,6 +3,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/Du-devBR/daily-diet-web)
 ![GitHub language count](https://img.shields.io/github/languages/count/Du-devBR/daily-diet-web)
 ![GitHub forks](https://img.shields.io/github/forks/Du-devBR/daily-diet-web)
+![license](https://img.shields.io/github/license/Du-devBR/daily-diet-web/)
 
 > Adaptação projeto mobile para versão web. Este é um projeto fornecido pela [Rocketseat](http://app.ropcketseat.com.br) e tem fins acadêmicos, onde o objetivo foi transformar uma projeto de react native para React versão web. Utilizei do conceito mobile first e adicionei novas funcionalidades para login, registro de usuario e reset de senha. O projeto se comunica com a api criado em NodeJs hospedado no Render e com banco Postgres.
 
